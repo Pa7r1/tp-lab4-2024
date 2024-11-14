@@ -13,9 +13,9 @@ export let db;
 export async function dbConnection() {
   try {
     db = await mysql.createConnection(configDB);
-    console.log("Conexión a la base de datos establecida.");
+    console.log("base de datos conectada");
   } catch (error) {
-    console.error("Error al conectar con la base de datos:", error.message);
+    console.error("error de conexion en la base de datos", error.message);
   }
 }
 
