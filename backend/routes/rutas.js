@@ -8,4 +8,5 @@ Router.get("/el-mas-vendido", bookControl.libroMasVendido);
 Router.get("/reporte-venta", bookControl.reporteVenta); //agregar fecha a este registro en la respuesta json
 Router.get("/ganancias-diaria", bookControl.gananciaDiaria);
 Router.get("/todos", bookControl.todos);
+Router.post("/nueva-venta", bookControl.nuevaVenta);
 export default Router;
