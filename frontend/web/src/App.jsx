@@ -23,14 +23,14 @@ function App() {
 
   return (
   <>
-    <div style= {{width: "40vw", margin: "auto"}}>
+    <div style= {{width: "25vw", margin: "auto"}}>
       <ImageGallery
       items = {imagenes}
       showPlayButton = {true}
 
       showFullscreenButton = {false} //activar o desactivar boton de pantalla completa
       showThumbnails = {true} //imagen miniatura, de la imagen carusel
-      thumbnailPosition="left" //posicion de la imagen miniatura
+      thumbnailPosition="top" //posicion de la imagen miniatura
       showBullets = {true} //pequeños circulos que indican la cantidad de imagenes
       slideInterval={3000} //tiempo que va a ir rotando cada imagen
       slideDuration={1000} //tiempo que va a tardar hacer la trnasicion 
