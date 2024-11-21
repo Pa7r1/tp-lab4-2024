@@ -28,7 +28,7 @@ function App() {
       items = {imagenes}
       showPlayButton = {true}
 
-      showFullscreenButton = {false} //activar o desactivar boton de pantalla completa
+      showFullscreenButton = {false} //activar o desactivar boton de pantalla completaa
       showThumbnails = {true} //imagen miniatura, de la imagen carusel
       thumbnailPosition="top" //posicion de la imagen miniatura
       showBullets = {true} //pequeños circulos que indican la cantidad de imagenes
