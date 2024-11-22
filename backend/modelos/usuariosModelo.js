@@ -1,5 +1,9 @@
 import { db } from "./mysql.js";
 
+// USUARIOS
+
+// empleados
+
 const agregarEmpleado = async (
   nombre,
   cargo,
@@ -23,23 +27,18 @@ const agregarEmpleado = async (
 };
 
 const verEmpleadosActivos = async () => {
-  const sql = `SELECT e.id, e.nombre, e.cargo, e.salario, e.fecha_contratacion, u.username, u.rol
-   FROM empleados e 
-   INNER JOIN usuarios u ON e.id = u.empleado_id
-   WHERE activo = 1`;
+  const sql = `CALL verEmpleadosActivos()`;
   const [result] = await db.execute(sql);
   return result;
 };
 
 const verEmpleadoPorId = async (id) => {
-  const sql = `SELECT e.id, e.nombre, e.cargo, e.salario, e.fecha_contratacion, u.username, u.rol
-   FROM empleados e 
-   INNER JOIN usuarios u ON e.id = u.empleado_id
-   WHERE e.id = ?`;
+  const sql = `CALL empleadoPorId(?)`;
   const [result] = await db.execute(sql, [id]);
+  return result;
 };
 
-const actualizarEmpleado = async (id, datosEmpleado) => {
+const actualizarEmpleado = async (empleado_id, datosEmpleado) => {
   const { nombre, cargo, salario, fecha_contratacion } = datosEmpleado;
   const sql = `UPDATE empleados SET nombre = ?, cargo = ?, salario = ?, fecha_contratacion = ? WHERE id = ?`;
   const [result] = await db.execute(sql, [
@@ -47,7 +46,7 @@ const actualizarEmpleado = async (id, datosEmpleado) => {
     cargo,
     salario,
     fecha_contratacion,
-    id,
+    empleado_id,
   ]);
   return result;
 };
@@ -64,7 +63,7 @@ const habilitarEmpleado = async (empleado_id) => {
   return result;
 };
 
-const employeModel = {
+const userModel = {
   agregarEmpleado,
   verEmpleadosActivos,
   verEmpleadoPorId,
@@ -73,4 +72,4 @@ const employeModel = {
   habilitarEmpleado,
 };
 
-export default employeModel;
+export default userModel;

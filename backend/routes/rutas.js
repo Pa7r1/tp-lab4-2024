@@ -1,5 +1,6 @@
 import express from "express";
 import { bookControl } from "../controladores/librosControl.js";
+import userControl from "../controladores/empleadosControl.js";
 
 const Router = express.Router();
 Router.get("/ventas-diarias", bookControl.ventasDiarias);
@@ -9,4 +10,13 @@ Router.get("/reporte-venta", bookControl.reporteVenta); //agregar fecha a este r
 Router.get("/ganancias-diaria", bookControl.gananciaDiaria);
 Router.get("/todos", bookControl.todos);
 Router.post("/nueva-venta", bookControl.nuevaVenta);
+
+// usuarios-empleados
+Router.get("/empleados", userControl.empleadosActivos);
+Router.get("/empleado/:id", userControl.empleadosPorID);
+Router.post("/nuevo-empelado", userControl.crearEmpleado);
+Router.put("/recontratacion-empleado/:empleado_id", userControl.volverContrato);
+Router.put("/editar-empleado/:empleado_id", userControl.editarEmpleado);
+Router.delete("/despedir-empleado/:empleado_id", userControl.despedirEmpleado);
+
 export default Router;
