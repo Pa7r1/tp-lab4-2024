@@ -2,6 +2,12 @@ import { db } from "./mysql.js";
 
 // USUARIOS
 
+const usuarios = async (username) => {
+  const sql = `SELECT * FROM usuarios WHERE username = ?`;
+  const [result] = await db.execute(sql, [username]);
+  return result;
+};
+
 // empleados
 
 const agregarEmpleado = async (
@@ -64,6 +70,7 @@ const habilitarEmpleado = async (empleado_id) => {
 };
 
 const userModel = {
+  usuarios,
   agregarEmpleado,
   verEmpleadosActivos,
   verEmpleadoPorId,
