@@ -29,7 +29,7 @@ const NavBar = ({navLinkList, hideNavList}) => {
                         sx= {{ flexGrow: 1}}
                         variant="h6" 
                         >
-                        Categorias
+                        Administración
                         </Typography>
                         {
                         navLinkList.map(item =>(

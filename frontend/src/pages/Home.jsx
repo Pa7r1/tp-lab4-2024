@@ -1,9 +1,7 @@
-//import React from 'react'
-import "./App.css"
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css" 
 
-function App() {
+function Home() {
 
   const imagenes = [
     {
@@ -23,17 +21,23 @@ function App() {
 
   return (
   <>
-    <div style= {{width: "25vw", margin: "auto"}}>
+    <body style={{backgroundColor:"#b6293a" }} />
+    <div style= {
+        {width: "36vw",
+        margin: "auto",
+        backgroundColor: "#b6293a",
+        }}>
+
       <ImageGallery
       items = {imagenes}
       showPlayButton = {true}
 
       showFullscreenButton = {false} //activar o desactivar boton de pantalla completaa
       showThumbnails = {true} //imagen miniatura, de la imagen carusel
-      thumbnailPosition="top" //posicion de la imagen miniatura
+      thumbnailPosition="left" //posicion de la imagen miniatura
       showBullets = {true} //pequeños circulos que indican la cantidad de imagenes
       slideInterval={3000} //tiempo que va a ir rotando cada imagen
-      slideDuration={1000} //tiempo que va a tardar hacer la trnasicion 
+      slideDuration={500} //tiempo que va a tardar hacer la trnasicion 
       
       /> 
     </div>
@@ -43,4 +47,4 @@ function App() {
   )
 }
 
-export default App
+export default Home
