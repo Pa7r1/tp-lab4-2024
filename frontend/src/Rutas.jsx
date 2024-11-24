@@ -1,42 +1,38 @@
 import {Routes, Route} from "react-router-dom"
-import Layout from "../pages/Layout";
-import Productos from "/pages/Productos";
-import Default from "/pages/Default";
-import Home from "../pages/Home";
-import Inicio from "../pages/Inicio";
-
+import Layout from "../src/pages/Layout";
+import Productos from "../src/pages/Productos";
+import Default from "../src/pages/Default";
+import Home from "../src/pages/Home";
+import Inicio from "../src/pages/Inicio";
 import { Container } from "@mui/material";
-import Categorias from "../pages/Categorias";
-import NavBar from "../componentes/navbar/Navbar";
+import NavBar from "../src/componentes/navbar/Navbar";
 import LogoutIcon from '@mui/icons-material/Logout';
-import CategoryIcon from '@mui/icons-material/Category';
+import AdminPanelSettingsSharpIcon from '@mui/icons-material/AdminPanelSettingsSharp';
+import AcercaDe from "../src/pages/AcercaDe";
+import fondolibro5 from "../public/img/fondolibro5.jpg"
 
 const hideNavList = [
     {
-        path: "/categorias/terror",
-        icon: <CategoryIcon/>,
-        tittle: "terror",
+        path: "reportes",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Reportes",
     },
     {
-        path: "/categorias/comedia",
-        icon: <CategoryIcon/>,
-        tittle: "comedia",
+        path: "/proveedores",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Proveedores",
     },
     {
-        path: "/categorias/romance",
-        icon: <CategoryIcon/>,
-        tittle: "romance",
+        path: "vender",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Vender",
     },
     {
-        path: "/categorias/acción",
-        icon: <CategoryIcon/>,
-        tittle: "acccion",
+        path: "alquilar",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Alquilar",
     },
-    {
-        path: "/categorias/novelas",
-        icon: <CategoryIcon/>,
-        tittle: "novelas",
-    },
+    
 ]
 const navLinkList = [
     {
@@ -48,27 +44,41 @@ const navLinkList = [
         path: "/productos",
     },
     {
+        tittle: "Acerca de ",
+        path: "/acerca de",
+    },
+    {
         path : "/",
         icon: <LogoutIcon/>,
     },
 ]
 
-const Rutas = () =>{
-    return ( 
+const backgroundStyle = {
+    backgroundImage: `url(${fondolibro5})`, // URL de la imagen
+    backgroundSize: "cover", // Escala la imagen para cubrir todo el contenedor
+    backgroundPosition: "center", // Centra la imagen
+    backgroundRepeat: "no-repeat", // Evita que se repita
+    height: "100vh", // Asegura que cubra toda la pantalla
+    width: "100%", // Ocupa todo el ancho
+}
+const Rutas = () => {
+    return (
         <>
-        <NavBar navLinkList= {navLinkList} hideNavList={hideNavList}/>
-        <Container sx={{mt:5}}>
-            
-            <Routes >
-                <Route path = "/" element={<Layout/>} >
-                <Route index element={<Inicio/>} />
-                <Route path = "/productos" element={<Productos/>} />
-                <Route path = "/categorias" element={<Categorias/>} />
-                <Route path = "/home" element={<Home/>} />
-                <Route path = "/*" element={<Default/>} />
-                </Route>
-            </Routes>
-            </Container>
+            <div style={backgroundStyle}>
+                <NavBar navLinkList={navLinkList} hideNavList={hideNavList} />
+                <Container sx={{ mt: 5, }}>
+                    <Routes >
+                        <Route path="/" element={<Layout />} >
+                            <Route index element={<Inicio />} />
+                            <Route path="/productos" element={<Productos />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/acerca de" element={<AcercaDe />} />
+                            <Route path="/*" element={<Default />} />
+
+                        </Route>
+                    </Routes>
+                </Container>
+            </div>
         </>
     );
 }

@@ -8,9 +8,8 @@ import '@fontsource/roboto/700.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import  {ThemeProvider}  from "@mui/material";
 import Theme from "../public/Fuentes.jsx"
-import Cardcito from "../componentes/Card/Cardcito.jsx";
 import Rutas from "./Rutas.jsx";
-import NavBar from "../componentes/navbar/Navbar.jsx";
+
 
 
 createRoot
