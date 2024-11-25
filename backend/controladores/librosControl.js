@@ -37,8 +37,19 @@ const todos = async (req, res) => {
   res.send({ libros });
 };
 
+const nuevaVenta = async (req, res) => {
+  const { empleado_id, cliente_id, libro_id, cantidad } = req.body;
+  const venta = await bookModel.registrarVenta(
+    empleado_id,
+    cliente_id,
+    libro_id,
+    cantidad
+  );
+};
+
 export const bookControl = {
   reporteVenta,
+  nuevaVenta,
   ventasDiarias,
   libroMasVendido,
   gananciaDiaria,
