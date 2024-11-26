@@ -8,4 +8,5 @@ export const validarRol = (rol) => (req, res, next) => {
       .status(403)
       .send({ mensaje: "No está autorizado para esta acción." });
   }
+  next();
 };

@@ -7,7 +7,6 @@ const usuarios = async (username) => {
   const [result] = await db.execute(sql, [username]);
   return result;
 };
-
 // empleados
 
 const agregarEmpleado = async (

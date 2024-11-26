@@ -13,21 +13,38 @@ const empleadosPorID = async (req, res) => {
 };
 
 const crearEmpleado = async (req, res) => {
-  const { nombre, cargo, salario, fecha_contrato, username, password, rol } =
-    req.body;
+  try {
+    const { nombre, cargo, salario, fecha_contrato, username, password } =
+      req.body;
 
-  const passwordHashed = await bcrypt.hash(password, 10);
+    // Validar que el usuario actual sea admin
+    if (req.user.rol !== "administrador") {
+      return res.status(403).send({ mensaje: "Acceso denegado." });
+    }
 
-  const nuevoEmpleado = await userModel.agregarEmpleado(
-    nombre,
-    cargo,
-    salario,
-    fecha_contrato,
-    username,
-    passwordHashed,
-    rol
-  );
-  res.send({ newEmployee: nuevoEmpleado[0] });
+    // Hashear la contraseña
+    const passwordHashed = await bcrypt.hash(password, 10);
+
+    // Crear empleado
+    const nuevoEmpleado = await userModel.agregarEmpleado(
+      nombre,
+      cargo,
+      salario,
+      fecha_contrato,
+      username,
+      passwordHashed,
+      "empleado" // Rol fijo para empleados
+    );
+
+    res
+      .status(201)
+      .send({ mensaje: "Empleado creado exitosamente.", nuevoEmpleado });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ mensaje: "Error al crear el empleado.", error: error.message });
+  }
 };
 
 const editarEmpleado = async (req, res) => {
