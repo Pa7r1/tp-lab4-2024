@@ -4,11 +4,18 @@ import userModel from "../modelos/usuariosModelo.js";
 
 const login = async (req, res) => {
   const { username, password } = req.body;
+<<<<<<< HEAD
   // console.log(username)
   const [usuario] = await userModel.usuarios(username);
 
 // se le agrega !usuario como validación sino el codigo rompe (coment para el equipo)
   if (!usuario || usuario.length == 0) {
+=======
+
+  const [usuario] = await userModel.usuarios(username);
+
+  if (usuario.length === 0) {
+>>>>>>> dd46a16e2048b0ab60ba5cc75aebcb61cea07c9d
     return res.status(400).send({ mensaje: "usuario o contraseña invalidos" });
   }
 
