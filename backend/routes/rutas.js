@@ -12,10 +12,11 @@ const Router = express.Router();
 //libros
 Router.get("/todos", bookControl.todos);
 Router.post("/agregar-libro", bookControl.nuevoLibro);
+Router.put("/editar-libro/:libro_id", bookControl.editLibro); //agregar funcion para editar libro
 
 //stock
-Router.get("/control-stock", stockControl.libroStockBajo);
-Router.post("/agregar-stock/:libro_id", stockControl.agregarStock);
+Router.get("/control-stock", stockControl.libroStockBajo); // busca los libros con el stock que le indiques
+Router.put("/agregar-stock/:libro_id", stockControl.agregarStock); // agrega stock indicando el libro y su proveedor
 
 //ventas
 Router.get(

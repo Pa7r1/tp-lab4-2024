@@ -12,7 +12,7 @@ const agregarLibroNuevo = async (
   autor_nombre,
   editorial_nombre,
   año,
-  stock_inicial,
+  stock_icial,
   precio_venta,
   precio_alquiler
 ) => {
@@ -23,9 +23,33 @@ const agregarLibroNuevo = async (
     autor_nombre,
     editorial_nombre,
     año,
-    stock_inicial,
+    stock_icial,
     precio_venta,
     precio_alquiler,
+  ]);
+  return newLibro;
+};
+
+const editarLibro = async (
+  i_libro_id,
+  i_titulo,
+  i_genero_nombre,
+  i_autor_nombre,
+  i_editorial_nombre,
+  i_año,
+  i_precio_venta,
+  i_precio_alquiler
+) => {
+  const sql = `CALL EditarLibro(?,?,?,?,?,?,?,?)`;
+  const [newLibro] = await db.execute(sql, [
+    i_libro_id,
+    i_titulo,
+    i_genero_nombre,
+    i_autor_nombre,
+    i_editorial_nombre,
+    i_año,
+    i_precio_venta,
+    i_precio_alquiler,
   ]);
   return newLibro;
 };
@@ -33,6 +57,7 @@ const agregarLibroNuevo = async (
 const bookModel = {
   all,
   agregarLibroNuevo,
+  editarLibro,
 };
 
 export default bookModel;
