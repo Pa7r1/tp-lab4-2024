@@ -9,6 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import  {ThemeProvider}  from "@mui/material";
 import Theme from "../public/Fuentes.jsx"
 import Rutas from "./Rutas.jsx";
+import { AuthProvider } from "./Auth.jsx";
 
 
 
@@ -17,8 +18,10 @@ createRoot
   <StrictMode>
     <ThemeProvider theme={Theme}>
       <BrowserRouter>
+      <AuthProvider>
         <CssBaseline />
         <Rutas/>
+        </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>
   </StrictMode>
