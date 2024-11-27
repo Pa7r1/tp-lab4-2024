@@ -16,6 +16,7 @@ authConfig();
 app.use(passport.initialize());
 
 app.use("/api/v1", Router);
+app.use("/api/v1/login",Router);
 
 const iniciar = async () => {
   await dbConnection();
