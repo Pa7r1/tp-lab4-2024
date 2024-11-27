@@ -11,8 +11,11 @@ const Router = express.Router();
 
 //libros
 Router.get("/todos", bookControl.todos);
+Router.get("/busqueda", bookControl.buscarLibro); // busqueda por titulo,isbn,autor
 Router.post("/agregar-libro", bookControl.nuevoLibro);
-Router.put("/editar-libro/:libro_id", bookControl.editLibro); //agregar funcion para editar libro
+Router.put("/editar-libro/:libro_id", bookControl.editLibro); //editar cualquier parametro de libro ubicandolo con su id
+Router.put("/devolver-libro-borrado/:libro_id", bookControl.habilitarLibro); //crear funcion para devolver el libro borrado
+Router.delete("/borrar-libro/:libro_id", bookControl.deshabilitarLibro); //crear funcion para borrar el libro
 
 //stock
 Router.get("/control-stock", stockControl.libroStockBajo); // busca los libros con el stock que le indiques

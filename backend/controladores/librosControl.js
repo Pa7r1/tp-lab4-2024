@@ -9,6 +9,7 @@ const nuevoLibro = async (req, res) => {
   try {
     const {
       titulo,
+      isbn,
       genero_nombre,
       autor_nombre,
       editorial_nombre,
@@ -20,6 +21,7 @@ const nuevoLibro = async (req, res) => {
 
     const nuevoLibro = await bookModel.agregarLibroNuevo(
       titulo,
+      isbn,
       genero_nombre,
       autor_nombre,
       editorial_nombre,
@@ -61,8 +63,37 @@ const editLibro = async (req, res) => {
   res.status(200).send({ libro_editado: nuevoLibro[0] });
 };
 
+const deshabilitarLibro = async (req, res) => {
+  const libro_id = req.params.libro_id;
+  const libroDeshabilitado = await bookModel.eliminarLibro(libro_id);
+  res.status(200).send({ libro_eliminado: libroDeshabilitado[0] });
+};
+
+const habilitarLibro = async (req, res) => {
+  const libro_id = req.params.libro_id;
+  const libroDeNuevo = await bookModel.habilitarLibro(libro_id);
+  res.status(200).send({ libro: libroDeNuevo[0] });
+};
+
+const buscarLibro = async (req, res) => {
+  const i_titulo = req.query.titulo || null;
+  const i_autor_nombre = req.query.autor_nombre || null;
+  const i_isbn = req.query.isbn || null;
+
+  const libros = await bookModel.busquedaAvanzada(
+    i_titulo,
+    i_autor_nombre,
+    i_isbn
+  );
+
+  res.status(200).send({ libros_buscados: libros[0] });
+};
+
 export const bookControl = {
   todos,
   nuevoLibro,
   editLibro,
+  deshabilitarLibro,
+  habilitarLibro,
+  buscarLibro,
 };

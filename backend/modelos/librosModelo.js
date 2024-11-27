@@ -1,13 +1,14 @@
 import { db } from "./mysql.js";
 
 const all = async () => {
-  const sql = `SELECT * FROM libros`;
+  const sql = `SELECT * FROM libros WHERE activo = 1`;
   const [libros] = await db.execute(sql);
   return libros;
 };
 
 const agregarLibroNuevo = async (
   titulo,
+  isbn,
   genero_nombre,
   autor_nombre,
   editorial_nombre,
@@ -19,6 +20,7 @@ const agregarLibroNuevo = async (
   const sql = `CALL AgregarLibroNuevo(?,?,?,?,?,?,?,?)`;
   const [newLibro] = await db.execute(sql, [
     titulo,
+    isbn,
     genero_nombre,
     autor_nombre,
     editorial_nombre,
@@ -54,10 +56,31 @@ const editarLibro = async (
   return newLibro;
 };
 
+const eliminarLibro = async (libro_id) => {
+  const sql = `CALL deshabilitarLibro(?)`;
+  const [result] = await db.execute(sql, [libro_id]);
+  return result;
+};
+
+const habilitarLibro = async (libro_id) => {
+  const sql = `CALL habilitarLibro(?)`;
+  const [result] = await db.execute(sql, [libro_id]);
+  return result;
+};
+
+const busquedaAvanzada = async (i_titulo, i_autor_nombre, i_isbn) => {
+  const sql = `CALL busquedaAvanzada(?,?,?)`;
+  const [result] = await db.execute(sql, [i_titulo, i_autor_nombre, i_isbn]);
+  return result;
+};
+
 const bookModel = {
   all,
   agregarLibroNuevo,
   editarLibro,
+  eliminarLibro,
+  habilitarLibro,
+  busquedaAvanzada,
 };
 
 export default bookModel;
