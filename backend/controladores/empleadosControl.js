@@ -17,15 +17,12 @@ const crearEmpleado = async (req, res) => {
     const { nombre, cargo, salario, fecha_contrato, username, password } =
       req.body;
 
-    // Validar que el usuario actual sea admin
     if (req.user.rol !== "administrador") {
       return res.status(403).send({ mensaje: "Acceso denegado." });
     }
 
-    // Hashear la contraseña
     const passwordHashed = await bcrypt.hash(password, 10);
 
-    // Crear empleado
     const nuevoEmpleado = await userModel.agregarEmpleado(
       nombre,
       cargo,
@@ -33,12 +30,13 @@ const crearEmpleado = async (req, res) => {
       fecha_contrato,
       username,
       passwordHashed,
-      "empleado" // Rol fijo para empleados
+      "empleado"
     );
 
-    res
-      .status(201)
-      .send({ mensaje: "Empleado creado exitosamente.", nuevoEmpleado });
+    res.status(201).send({
+      mensaje: "Empleado creado exitosamente.",
+      Empleado: nuevoEmpleado[0],
+    });
   } catch (error) {
     console.error(error);
     res
