@@ -9,10 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import  {ThemeProvider}  from "@mui/material";
 import Theme from "../public/Fuentes.jsx"
 import Rutas from "./Rutas.jsx";
-<<<<<<< HEAD
 import { AuthProvider } from "./Auth.jsx";
-=======
->>>>>>> dd46a16e2048b0ab60ba5cc75aebcb61cea07c9d
 
 
 
@@ -21,15 +18,10 @@ createRoot
   <StrictMode>
     <ThemeProvider theme={Theme}>
       <BrowserRouter>
-<<<<<<< HEAD
       <AuthProvider>
         <CssBaseline />
         <Rutas/>
         </AuthProvider>
-=======
-        <CssBaseline />
-        <Rutas/>
->>>>>>> dd46a16e2048b0ab60ba5cc75aebcb61cea07c9d
       </BrowserRouter>
     </ThemeProvider>
   </StrictMode>
