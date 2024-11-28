@@ -30,4 +30,7 @@ const login = async (req, res) => {
   });
 };
 
-export default login;
+export default {
+  name: "login",
+  create: login,
+};

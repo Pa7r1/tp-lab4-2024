@@ -33,6 +33,14 @@ const agregarStock = async (req, res) => {
     stock_actualizado: libroAgregado[0],
   });
 };
-const stockControl = { libroStockBajo, agregarStock };
 
-export default stockControl;
+const stockDisponible = async (req, res) => {
+  const stock = await stockModel.stockDisponible();
+  res.status(200).send({ stock_disponible: stock[0] });
+};
+export default {
+  name: "sotck",
+  noMenos: libroStockBajo,
+  update: agregarStock,
+  verStock: stockDisponible,
+};

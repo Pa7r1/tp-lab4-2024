@@ -6,6 +6,12 @@ const all = async () => {
   return libros;
 };
 
+const allDelete = async () => {
+  const sql = `SELECT * FROM libros WHERE activo = 0`;
+  const [libros] = await db.execute(sql);
+  return libros;
+};
+
 const agregarLibroNuevo = async (
   titulo,
   isbn,
@@ -81,6 +87,7 @@ const bookModel = {
   eliminarLibro,
   habilitarLibro,
   busquedaAvanzada,
+  allDelete,
 };
 
 export default bookModel;

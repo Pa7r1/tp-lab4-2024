@@ -5,6 +5,11 @@ const todos = async (req, res) => {
   res.send({ libros });
 };
 
+const todosBorrados = async (req, res) => {
+  const libros = await bookModel.allDelete();
+  res.send({ libros });
+};
+
 const nuevoLibro = async (req, res) => {
   try {
     const {
@@ -33,8 +38,9 @@ const nuevoLibro = async (req, res) => {
     res.status(201).send({ libro_nuevo: nuevoLibro[0] });
   } catch (error) {
     console.error(error);
-    res.status(500);
-    res.send({ mensaje: "error al crear libro", error: error.message });
+    res
+      .status(500)
+      .send({ mensaje: "error al crear libro", error: error.message });
   }
 };
 
@@ -85,15 +91,15 @@ const buscarLibro = async (req, res) => {
     i_autor_nombre,
     i_isbn
   );
-
   res.status(200).send({ libros_buscados: libros[0] });
 };
 
-export const bookControl = {
-  todos,
-  nuevoLibro,
-  editLibro,
-  deshabilitarLibro,
-  habilitarLibro,
-  buscarLibro,
+export default {
+  name: "libros",
+  librosActivos: todos,
+  librosInactivos: todosBorrados,
+  create: nuevoLibro,
+  delete: deshabilitarLibro,
+  habilitarLibroN: habilitarLibro,
+  search: buscarLibro,
 };

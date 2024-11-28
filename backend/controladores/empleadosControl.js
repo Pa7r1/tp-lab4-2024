@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import userModel from "../modelos/usuariosModelo.js";
+import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
 
 const empleadosActivos = async (req, res) => {
   const empleados = await userModel.verEmpleadosActivos();
@@ -64,12 +65,13 @@ const volverContrato = async (req, res) => {
   const reContrato = await userModel.habilitarEmpleado(empleado_id);
   res.send({ contratado_nuevamente: reContrato[0] });
 };
-const userControl = {
-  empleadosActivos,
-  empleadosPorID,
-  crearEmpleado,
-  despedirEmpleado,
-  volverContrato,
-  editarEmpleado,
+export default {
+  name: "empleados",
+  prefix: "/empleados",
+  empleadosActivos: [validarJwt, validarRol("administrador"), empleadosActivos],
+  show: [validarJwt, validarRol("administrador"), empleadosPorID],
+  create: [validarJwt, validarRol("administrador"), crearEmpleado],
+  update: [validarJwt, validarRol("administrador"), editarEmpleado],
+  delete: [validarJwt, validarRol("administrador"), despedirEmpleado],
+  volverContrato: [validarJwt, validarRol("administrador"), volverContrato],
 };
-export default userControl;
