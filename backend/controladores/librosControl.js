@@ -1,58 +1,115 @@
 import bookModel from "../modelos/librosModelo.js";
-
-const ventasDiarias = async (req, res) => {
-  const fecha = req.query.fecha || new Date().toISOString().split("T")[0];
-  const ventasDia = await bookModel.calculoVentasDiarias(fecha);
-  res.send({ ventasDelDia: ventasDia[0] });
-};
-
-const libroMasVendido = async (req, res) => {
-  const fehca_i = req.query.fecha_i;
-  const fecha_f = req.query.fecha_f;
-  const libro = await bookModel.calculoLibroMvendido(fehca_i, fecha_f);
-  res.send({ El_Mas_Vendido: libro[0] });
-};
-
-const gananciaDiaria = async (req, res) => {
-  const fecha = req.query.fecha || new Date().toISOString().split("T")[0];
-  const gananciaDia = await bookModel.calculoGananciaDiaria(fecha);
-  res.send({ gananciasDia: gananciaDia[0] });
-};
-
-const reporteVenta = async (req, res) => {
-  const fecha_i = req.query.fecha_i;
-  const fecha_f = req.query.fecha_f;
-  const reporte = await bookModel.generarReporteVentas(fecha_i, fecha_f);
-  res.send({ reportes: reporte[0] });
-};
-
-const controlStock = async (req, res) => {
-  const cantidad = req.query.cantidad;
-  const control = await bookModel.calculoControlStock(cantidad);
-  res.send({ stock_disponible: control[0] });
-};
+import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
 
 const todos = async (req, res) => {
   const libros = await bookModel.all();
-  res.send({ libros });
+  res.send({ LIBROS: libros[0] });
 };
 
-const nuevaVenta = async (req, res) => {
-  const { empleado_id, cliente_id, libro_id, cantidad } = req.body;
-  const venta = await bookModel.registrarVenta(
-    empleado_id,
-    cliente_id,
-    libro_id,
-    cantidad
+const todosBorrados = async (req, res) => {
+  const libros = await bookModel.allDelete();
+  res.send({ LIBROS: libros[0] });
+};
+
+const nuevoLibro = async (req, res) => {
+  try {
+    const {
+      titulo,
+      isbn,
+      genero_nombre,
+      autor_nombre,
+      editorial_nombre,
+      año,
+      stock_inicial,
+      precio_venta,
+      precio_alquiler,
+    } = req.body;
+
+    const nuevoLibro = await bookModel.agregarLibroNuevo(
+      titulo,
+      isbn,
+      genero_nombre,
+      autor_nombre,
+      editorial_nombre,
+      año,
+      stock_inicial,
+      precio_venta,
+      precio_alquiler
+    );
+    res.status(201).send({ libro_nuevo: nuevoLibro[0] });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ mensaje: "error al crear libro", error: error.message });
+  }
+};
+
+const editLibro = async (req, res) => {
+  const id = req.params.id;
+  const {
+    titulo,
+    genero_nombre,
+    autor_nombre,
+    editorial_nombre,
+    año,
+    precio_venta,
+    precio_alquiler,
+  } = req.body;
+
+  const nuevoLibro = await bookModel.editarLibro(
+    id,
+    titulo || null,
+    genero_nombre || null,
+    autor_nombre || null,
+    editorial_nombre || null,
+    año || null,
+    precio_venta || null,
+    precio_alquiler || null
   );
+  res.status(200).send({ libro_editado: nuevoLibro[0] });
 };
 
-export const bookControl = {
-  reporteVenta,
-  nuevaVenta,
-  ventasDiarias,
-  libroMasVendido,
-  gananciaDiaria,
-  controlStock,
-  todos,
+const deshabilitarLibro = async (req, res) => {
+  const id = req.params.id;
+  const libroDeshabilitado = await bookModel.eliminarLibro(id);
+  res.status(200).send({ libro_eliminado: libroDeshabilitado[0] });
+};
+
+const habilitarLibro = async (req, res) => {
+  const id = req.params.id;
+  const libroDeNuevo = await bookModel.habilitarLibro(id);
+  res.status(200).send({ libro: libroDeNuevo[0] });
+};
+
+const buscarLibro = async (req, res) => {
+  let titulo = req.query.titulo || null;
+  let autor_nombre = req.query.autor_nombre || null;
+  let isbn = req.query.isbn || null;
+  const offset = 0;
+  const limit = 10;
+
+  titulo = titulo?.trim() || null;
+  autor_nombre = autor_nombre?.trim() || null;
+  isbn = isbn?.trim() || null;
+
+  const libros = await bookModel.busquedaAvanzada(
+    titulo,
+    autor_nombre,
+    isbn,
+    offset,
+    limit
+  );
+  res.status(200).send({ libros_buscados: libros[0] });
+};
+
+export default {
+  name: "libros",
+  librosActivos: todos,
+  librosInactivos: [validarJwt, validarRol("administrador"), todosBorrados],
+  update: [validarJwt, validarRol("administrador"), editLibro],
+  create: [validarJwt, validarRol("administrador"), nuevoLibro],
+  delete: [validarJwt, validarRol("administrador"), deshabilitarLibro],
+  habilitarLibroN: [validarJwt, validarRol("administrador"), habilitarLibro],
+  search: buscarLibro,
 };

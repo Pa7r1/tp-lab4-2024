@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import userModel from "../modelos/usuariosModelo.js";
+import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
 
 const empleadosActivos = async (req, res) => {
   const empleados = await userModel.verEmpleadosActivos();
@@ -17,15 +18,12 @@ const crearEmpleado = async (req, res) => {
     const { nombre, cargo, salario, fecha_contrato, username, password } =
       req.body;
 
-    // Validar que el usuario actual sea admin
     if (req.user.rol !== "administrador") {
       return res.status(403).send({ mensaje: "Acceso denegado." });
     }
 
-    // Hashear la contraseña
     const passwordHashed = await bcrypt.hash(password, 10);
 
-    // Crear empleado
     const nuevoEmpleado = await userModel.agregarEmpleado(
       nombre,
       cargo,
@@ -33,12 +31,13 @@ const crearEmpleado = async (req, res) => {
       fecha_contrato,
       username,
       passwordHashed,
-      "empleado" // Rol fijo para empleados
+      "empleado"
     );
 
-    res
-      .status(201)
-      .send({ mensaje: "Empleado creado exitosamente.", nuevoEmpleado });
+    res.status(201).send({
+      mensaje: "Empleado creado exitosamente.",
+      Empleado: nuevoEmpleado[0],
+    });
   } catch (error) {
     console.error(error);
     res
@@ -66,12 +65,13 @@ const volverContrato = async (req, res) => {
   const reContrato = await userModel.habilitarEmpleado(empleado_id);
   res.send({ contratado_nuevamente: reContrato[0] });
 };
-const userControl = {
-  empleadosActivos,
-  empleadosPorID,
-  crearEmpleado,
-  despedirEmpleado,
-  volverContrato,
-  editarEmpleado,
+export default {
+  name: "empleados",
+  prefix: "/empleados",
+  empleadosActivos: [validarJwt, validarRol("administrador"), empleadosActivos],
+  show: [validarJwt, validarRol("administrador"), empleadosPorID],
+  create: [validarJwt, validarRol("administrador"), crearEmpleado],
+  update: [validarJwt, validarRol("administrador"), editarEmpleado],
+  delete: [validarJwt, validarRol("administrador"), despedirEmpleado],
+  volverContrato: [validarJwt, validarRol("administrador"), volverContrato],
 };
-export default userControl;

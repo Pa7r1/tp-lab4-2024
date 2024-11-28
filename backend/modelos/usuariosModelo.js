@@ -1,14 +1,13 @@
 import { db } from "./mysql.js";
 
-// USUARIOS
-
+// usuarios
 const usuarios = async (username) => {
   const sql = `SELECT * FROM usuarios WHERE username = ?`;
   const [result] = await db.execute(sql, [username]);
   return result;
 };
-// empleados
 
+// empleados
 const agregarEmpleado = async (
   nombre,
   cargo,

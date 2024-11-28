@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
-import Router from "./routes/rutas.js";
 import { authConfig } from "./middleware/passaportConfig.js";
 import passport from "passport";
 import { dbConnection } from "./modelos/mysql.js";
 import ejecutarCrearAdmin from "./modelos/admin.js";
+import ejecutarCliente from "./modelos/casual.js";
+import { configureRoutes } from "./configureRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,12 +16,13 @@ app.use(cors());
 authConfig();
 app.use(passport.initialize());
 
-app.use("/api/v1", Router);
-app.use("/api/v1/login",Router);
+await configureRoutes(app, "controladores");
+console.log("rutas configurando");
 
 const iniciar = async () => {
   await dbConnection();
   await ejecutarCrearAdmin();
+  await ejecutarCliente();
   console.log("recursos necesarios ejecutados con exito");
 
   app.listen(PORT, () => {
