@@ -10,6 +10,7 @@ import AdminPanelSettingsSharpIcon from '@mui/icons-material/AdminPanelSettingsS
 import AcercaDe from "../src/pages/AcercaDe";
 import fondolibro5 from "../public/img/fondolibro5.jpg"
 import { AuthPage, AuthStatus } from "./Auth";
+import AgregarLibro from "./pages/Libros";
 
 const hideNavList = [
     {
@@ -23,9 +24,9 @@ const hideNavList = [
         tittle: "Proveedores",
     },
     {
-        path: "vender",
+        path: "/libros",
         icon: <AdminPanelSettingsSharpIcon/>,
-        tittle: "Vender",
+        tittle: "Libros",
     },
     {
         path: "alquilar",
@@ -71,6 +72,7 @@ const Rutas = () => {
                             <Route path="/empleados" element={<AuthPage><Empleados/></AuthPage>} />
 
                             <Route path="/home" element={<AuthPage><Home /></AuthPage>} />
+                            <Route path="/libros" element={<AuthPage><AgregarLibro /></AuthPage>} />
 
                             <Route path="/acerca de" element={<AcercaDe />} />
 
