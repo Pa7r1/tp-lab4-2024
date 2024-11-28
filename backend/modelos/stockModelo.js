@@ -17,8 +17,8 @@ const agregarStock = async (libro_id, provedor_id, cantidad, costo) => {
   return result;
 };
 
-const stockDisponible = async () => {
-  const sql = `CALL VerificarStockDisponible`;
+const verificarMiStock = async () => {
+  const sql = `CALL VerificarStockDisponible()`;
   const [result] = await db.execute(sql);
   return result;
 };
@@ -26,7 +26,7 @@ const stockDisponible = async () => {
 const stockModel = {
   calculoControlStock,
   agregarStock,
-  stockDisponible,
+  verificarMiStock,
 };
 
 export default stockModel;
