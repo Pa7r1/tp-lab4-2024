@@ -10,7 +10,7 @@ const agreagarProveedor = async (nombre, telefono, email, direccion) => {
 const proveedorPorNombre = async (nombre) => {
   const sql = `SELECT id FROM proveedores WHERE nombre = ?`;
   const [result] = await db.execute(sql, [nombre]);
-  return result[0]?.id || null;
+  return result[0].id || null;
 };
 
 const reponerStockProvedor = async (provedor_id, libro_id, cantidad) => {

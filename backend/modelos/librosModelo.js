@@ -1,7 +1,7 @@
 import { db } from "./mysql.js";
 
 const all = async () => {
-  const sql = `SELECT * FROM libros WHERE activo = 1`;
+  const sql = `CALL librosActivos()`;
   const [libros] = await db.execute(sql);
   return libros;
 };
@@ -23,7 +23,7 @@ const agregarLibroNuevo = async (
   precio_venta,
   precio_alquiler
 ) => {
-  const sql = `CALL AgregarLibroNuevo(?,?,?,?,?,?,?,?)`;
+  const sql = `CALL AgregarLibroNuevo(?,?,?,?,?,?,?,?,?)`;
   const [newLibro] = await db.execute(sql, [
     titulo,
     isbn,
@@ -62,15 +62,15 @@ const editarLibro = async (
   return newLibro;
 };
 
-const eliminarLibro = async (libro_id) => {
+const eliminarLibro = async (id) => {
   const sql = `CALL deshabilitarLibro(?)`;
-  const [result] = await db.execute(sql, [libro_id]);
+  const [result] = await db.execute(sql, [id]);
   return result;
 };
 
-const habilitarLibro = async (libro_id) => {
+const habilitarLibro = async (id) => {
   const sql = `CALL habilitarLibro(?)`;
-  const [result] = await db.execute(sql, [libro_id]);
+  const [result] = await db.execute(sql, [id]);
   return result;
 };
 
