@@ -31,20 +31,20 @@ export const configureRoutes = (app, baseDir = "./controladores") => {
               break;
             case "librosInactivos":
               method = "get";
-              url = `/${name}`;
+              url = `/${name}/borrados`;
               break;
             case "habilitarLibroN":
               method = "put";
-              url = `/${name}/:id`;
+              url = `/${name}/habilitar/:id`;
               break;
 
-            //sotck
+            //stock
             case "verStock":
               method = "get";
               url = `/${name}`;
             case "noMenos":
               method = "get";
-              url = `/${name}`;
+              url = `/${name}/minimo`;
 
             //empleados
             case "empleadosActivos":

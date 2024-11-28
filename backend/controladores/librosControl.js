@@ -1,13 +1,14 @@
 import bookModel from "../modelos/librosModelo.js";
+import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
 
 const todos = async (req, res) => {
   const libros = await bookModel.all();
-  res.send({ libros });
+  res.send({ LIBROS: libros[0] });
 };
 
 const todosBorrados = async (req, res) => {
   const libros = await bookModel.allDelete();
-  res.send({ libros });
+  res.send({ LIBROS: libros[0] });
 };
 
 const nuevoLibro = async (req, res) => {
@@ -45,51 +46,59 @@ const nuevoLibro = async (req, res) => {
 };
 
 const editLibro = async (req, res) => {
-  const libro_id = req.params.libro_id;
+  const id = req.params.id;
   const {
-    i_titulo,
-    i_genero_nombre,
-    i_autor_nombre,
-    i_editorial_nombre,
-    i_año,
-    i_precio_venta,
-    i_precio_alquiler,
+    titulo,
+    genero_nombre,
+    autor_nombre,
+    editorial_nombre,
+    año,
+    precio_venta,
+    precio_alquiler,
   } = req.body;
 
   const nuevoLibro = await bookModel.editarLibro(
-    libro_id,
-    i_titulo || null,
-    i_genero_nombre || null,
-    i_autor_nombre || null,
-    i_editorial_nombre || null,
-    i_año || null,
-    i_precio_venta || null,
-    i_precio_alquiler || null
+    id,
+    titulo || null,
+    genero_nombre || null,
+    autor_nombre || null,
+    editorial_nombre || null,
+    año || null,
+    precio_venta || null,
+    precio_alquiler || null
   );
   res.status(200).send({ libro_editado: nuevoLibro[0] });
 };
 
 const deshabilitarLibro = async (req, res) => {
-  const libro_id = req.params.libro_id;
-  const libroDeshabilitado = await bookModel.eliminarLibro(libro_id);
+  const id = req.params.id;
+  const libroDeshabilitado = await bookModel.eliminarLibro(id);
   res.status(200).send({ libro_eliminado: libroDeshabilitado[0] });
 };
 
 const habilitarLibro = async (req, res) => {
-  const libro_id = req.params.libro_id;
-  const libroDeNuevo = await bookModel.habilitarLibro(libro_id);
+  const id = req.params.id;
+  const libroDeNuevo = await bookModel.habilitarLibro(id);
   res.status(200).send({ libro: libroDeNuevo[0] });
 };
 
 const buscarLibro = async (req, res) => {
-  const i_titulo = req.query.titulo || null;
-  const i_autor_nombre = req.query.autor_nombre || null;
-  const i_isbn = req.query.isbn || null;
+  let titulo = req.query.titulo || null;
+  let autor_nombre = req.query.autor_nombre || null;
+  let isbn = req.query.isbn || null;
+  const offset = 0;
+  const limit = 10;
+
+  titulo = titulo?.trim() || null;
+  autor_nombre = autor_nombre?.trim() || null;
+  isbn = isbn?.trim() || null;
 
   const libros = await bookModel.busquedaAvanzada(
-    i_titulo,
-    i_autor_nombre,
-    i_isbn
+    titulo,
+    autor_nombre,
+    isbn,
+    offset,
+    limit
   );
   res.status(200).send({ libros_buscados: libros[0] });
 };
@@ -97,9 +106,10 @@ const buscarLibro = async (req, res) => {
 export default {
   name: "libros",
   librosActivos: todos,
-  librosInactivos: todosBorrados,
-  create: nuevoLibro,
-  delete: deshabilitarLibro,
-  habilitarLibroN: habilitarLibro,
+  librosInactivos: [validarJwt, validarRol("administrador"), todosBorrados],
+  update: [validarJwt, validarRol("administrador"), editLibro],
+  create: [validarJwt, validarRol("administrador"), nuevoLibro],
+  delete: [validarJwt, validarRol("administrador"), deshabilitarLibro],
+  habilitarLibroN: [validarJwt, validarRol("administrador"), habilitarLibro],
   search: buscarLibro,
 };
