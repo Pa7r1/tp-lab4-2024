@@ -53,7 +53,7 @@ export const configureRoutes = (app, baseDir = "./controladores") => {
               break;
             case "volverContrato":
               method = "put";
-              url = `/${name}/:id`;
+              url = `/${name}/habilitar/:id`;
               break;
 
             //ventas
