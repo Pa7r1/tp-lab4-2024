@@ -1,6 +1,10 @@
 import proveedorModel from "../modelos/proveedorModel.js";
 import stockModel from "../modelos/stockModelo.js";
 
+const stockDisponible = async (req, res) => {
+  const stock = await stockModel.verificarMiStock();
+  res.status(200).send({ Stock_disoponible: stock[0] });
+};
 const libroStockBajo = async (req, res) => {
   const cantidad = req.query.cantidad;
   console.log(cantidad);
@@ -34,10 +38,6 @@ const agregarStock = async (req, res) => {
   });
 };
 
-const stockDisponible = async (req, res) => {
-  const stock = await stockModel.verificarMiStock();
-  res.status(200).send({ Stock_disoponible: stock });
-};
 export default {
   name: "stock",
   noMenos: libroStockBajo,

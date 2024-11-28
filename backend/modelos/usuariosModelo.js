@@ -42,7 +42,7 @@ const verEmpleadoPorId = async (id) => {
   return result;
 };
 
-const actualizarEmpleado = async (empleado_id, datosEmpleado) => {
+const actualizarEmpleado = async (id, datosEmpleado) => {
   const { nombre, cargo, salario, fecha_contratacion } = datosEmpleado;
   const sql = `UPDATE empleados SET nombre = ?, cargo = ?, salario = ?, fecha_contratacion = ? WHERE id = ?`;
   const [result] = await db.execute(sql, [
@@ -50,20 +50,20 @@ const actualizarEmpleado = async (empleado_id, datosEmpleado) => {
     cargo,
     salario,
     fecha_contratacion,
-    empleado_id,
+    id,
   ]);
   return result;
 };
 
-const deshabilitarEmpleado = async (empleado_id) => {
+const deshabilitarEmpleado = async (id) => {
   const sql = `CALL deshabilitarEmpleado(?)`;
-  const [result] = await db.execute(sql, [empleado_id]);
+  const [result] = await db.execute(sql, [id]);
   return result;
 };
 
-const habilitarEmpleado = async (empleado_id) => {
+const habilitarEmpleado = async (id) => {
   const sql = `CALL habilitarEmpleado(?)`;
-  const [result] = await db.execute(sql, [empleado_id]);
+  const [result] = await db.execute(sql, [id]);
   return result;
 };
 
