@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuth } from "../../Auth";
 
 const RegistrarVenta = () => {
   const [empleadoId, setEmpleadoId] = useState("");
@@ -9,7 +10,8 @@ const RegistrarVenta = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const {sesion} = useAuth()
+    
     const ventaData = {
       empleado_id: empleadoId,
       cliente_id: clienteId,
@@ -21,6 +23,7 @@ const RegistrarVenta = () => {
       const response = await fetch("http://localhost:3000/api/v1/venta", {
         method: "POST",
         headers: {
+          Authetication :`Bearer ${sesion.token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(ventaData),

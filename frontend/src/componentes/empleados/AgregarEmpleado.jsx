@@ -26,7 +26,7 @@ const AgregarEmpleado = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/libros", {
+      const response = await fetch("http://localhost:3000/api/v1/empleados", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,6 +65,7 @@ const AgregarEmpleado = () => {
             required
           />
         </div>
+        
 
         <div>
           <label>Cargo:</label>

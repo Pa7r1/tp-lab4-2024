@@ -6,6 +6,7 @@ const AgregarLibro = () => {
   
   const [formulario, setFormulario] = useState({
     titulo: "",
+    isbn: "",
     genero_nombre: "",
     autor_nombre: "",
     editorial_nombre: "",
@@ -23,7 +24,7 @@ const AgregarLibro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/v1/libros/nuevoLibro", {
+      const response = await fetch("http://localhost:3000/api/v1/libros", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,6 +51,14 @@ const AgregarLibro = () => {
         name="titulo"
         placeholder="Título"
         value={formulario.titulo}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="number"
+        name="isbn"
+        placeholder="Isbn"
+        value={formulario.isbn}
         onChange={handleChange}
         required
       />
