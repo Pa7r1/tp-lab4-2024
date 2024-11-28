@@ -1,7 +1,7 @@
 import { db } from "./mysql.js";
 
 // proveedores
-const agreagrProveedor = async (nombre, telefono, email, direccion) => {
+const agreagarProveedor = async (nombre, telefono, email, direccion) => {
   const sql = `CALL AgregarProveedor(?,?,?,?)`;
   const [result] = await db.execute(sql, [nombre, telefono, email, direccion]);
   return result;
@@ -20,7 +20,7 @@ const reponerStockProvedor = async (provedor_id, libro_id, cantidad) => {
 };
 
 const proveedorModel = {
-  agreagrProveedor,
+  agreagarProveedor,
   proveedorPorNombre,
   reponerStockProvedor,
 };

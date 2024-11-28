@@ -3,7 +3,7 @@ import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
 
 const nuevoProveedor = async (req, res) => {
   const { nombre, telefono, email, direccion } = req.body;
-  const [newProveedor] = await proveedorModel.agreagrProveedor(
+  const [newProveedor] = await proveedorModel.agreagarProveedor(
     nombre,
     telefono,
     email,
