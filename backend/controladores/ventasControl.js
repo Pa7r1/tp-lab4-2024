@@ -1,6 +1,11 @@
 import ventasModel from "../modelos/ventasModelo.js";
 import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
 
+const ventas = async (req, res) => {
+  const todaslasVentas = await ventasModel.todas();
+  res.send({ VENTAS: todaslasVentas[0] });
+};
+
 const ventasDiarias = async (req, res) => {
   const fecha = req.query.fecha || new Date().toISOString().split("T")[0];
   const ventasDia = await ventasModel.calculoVentasDiarias(fecha);
@@ -27,18 +32,18 @@ const reporteVenta = async (req, res) => {
   res.send({ reportes: reporte[0] });
 };
 const nuevaVenta = async (req, res) => {
-  const { empleado_id, cliente_id, libro_id, cantidad } = req.body;
+  const { empleado_id, cliente_id, libros } = req.body;
   const venta = await ventasModel.registrarVenta(
     empleado_id,
     cliente_id,
-    libro_id,
-    cantidad
+    libros
   );
   res.status(201).send({ nueva_venta: venta[0] });
 };
 
 const ventaControl = {
   name: "ventas",
+  todasventas: [validarJwt, validarRol("administrador"), ventas],
   ventas_fecha: reporteVenta,
   create: nuevaVenta,
   ventasHoy: [validarJwt, validarRol("administrador"), ventasDiarias],
