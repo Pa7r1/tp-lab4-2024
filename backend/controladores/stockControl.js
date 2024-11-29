@@ -7,7 +7,6 @@ const stockDisponible = async (req, res) => {
 };
 const libroStockBajo = async (req, res) => {
   const cantidad = req.query.cantidad;
-  console.log(cantidad);
   const [libro] = await stockModel.calculoControlStock(cantidad);
   res.send({ stock_disponible: libro });
 };
@@ -23,7 +22,7 @@ const agregarStock = async (req, res) => {
   if (!proveedor_id) {
     return res
       .status(400)
-      .send({ error: "El proveedor especificado no existe." });
+      .send({ error: "El proveedor especificado no existe. " });
   }
   const [libroAgregado] = await stockModel.agregarStock(
     id,
