@@ -113,7 +113,10 @@ export const configureRoutes = (app, baseDir = "./controladores") => {
               throw new Error(`Método no reconocido: ${methodName}`);
           }
 
-          router[method](prefix ? prefix + url : url, handler);
+          router[method](
+            prefix ? prefix + url : url,
+            ...(Array.isArray(handler) ? handler : [handler])
+          );
         }
 
         app.use("/api/v1", router);

@@ -1,5 +1,9 @@
 import proveedorModel from "../modelos/proveedorModel.js";
 import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
+import {
+  validarCrearProveedor,
+  verificarValidaciones,
+} from "../middleware/validaciones.js";
 
 const verProveedores = async (req, res) => {
   const proveedores = await proveedorModel.proveedores();
@@ -18,6 +22,12 @@ const nuevoProveedor = async (req, res) => {
 
 export default {
   name: "proveedor",
-  create: [validarJwt, validarRol("administrador"), nuevoProveedor],
+  create: [
+    validarJwt,
+    validarRol("administrador"),
+    validarCrearProveedor(),
+    verificarValidaciones,
+    nuevoProveedor,
+  ],
   verProvedor: [validarJwt, validarRol("administrador"), verProveedores],
 };
