@@ -1,49 +1,71 @@
-(
-    <div>
-      <h1>Agregar Proveedor</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre</label>
-          <input
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Teléfono</label>
-          <input
-            type="text"
-            value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Dirección</label>
-          <input
-            type="text"
-            value={direccion}
-            onChange={(e) => setDireccion(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Agregar Proveedor</button>
-      </form>
+import React, { useState } from "react";
+import { useAuth } from "../../Auth";
 
-      {mensaje && <p>{mensaje}</p>}
-    </div>
-  );
-;
+const AgregarProveedor = ({ actualizarProveedores }) => {
+  const [nombre, setNombre] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [email, setEmail] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const { sesion } = useAuth();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/proveedor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${ sesion.token }`,
+        },
+    body: JSON.stringify({ nombre, telefono, email, direccion }),
+      });
+
+  if (!response.ok) throw new Error("Error al agregar el proveedor.");
+
+  actualizarProveedores();
+  setNombre("");
+  setTelefono("");
+  setEmail("");
+  setDireccion("");
+} catch (err) {
+  console.error(err.message);
+}
+  };
+
+return (
+  <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+    <h3>Agregar Proveedor</h3>
+    <input
+      type="text"
+      placeholder="Nombre"
+      value={nombre}
+      onChange={(e) => setNombre(e.target.value)}
+      required
+    />
+    <input
+      type="text"
+      placeholder="Teléfono"
+      value={telefono}
+      onChange={(e) => setTelefono(e.target.value)}
+      required
+    />
+    <input
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+    />
+    <input
+      type="text"
+      placeholder="Dirección"
+      value={direccion}
+      onChange={(e) => setDireccion(e.target.value)}
+      required
+    />
+    <button type="submit">Agregar</button>
+  </form>
+);
+};
 
 export default AgregarProveedor;

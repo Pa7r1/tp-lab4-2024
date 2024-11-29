@@ -12,6 +12,7 @@ import fondolibro5 from "../public/img/fondolibro5.jpg"
 import { AuthPage, AuthStatus } from "./Auth";
 import Libros from "./pages/Libros";
 import AdministrarEmpleados from "./pages/AdministrarEmpleados";
+import Proveedores from "./pages/Proveedores";
 
 const hideNavList = [
     {
@@ -77,7 +78,7 @@ const Rutas = () => {
                             
                             <Route path="/libros" element={<AuthPage><Libros /></AuthPage>} />
                             <Route path="/administrar-empleados" element={<AuthPage><AdministrarEmpleados /></AuthPage>} />
-                            
+                            <Route path="/proveedores" element={<AuthPage><Proveedores /></AuthPage>} />
 
                             <Route path="/*" element={<Default />} />
 

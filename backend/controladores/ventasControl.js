@@ -77,13 +77,16 @@ const reporteVenta = async (req, res) => {
 };
 const nuevaVenta = async (req, res) => {
   const { empleado_id, cliente_id, libros } = req.body;
+  console.log("Datos recibidos:", req.body);
   const venta = await ventasModel.registrarVenta(
     empleado_id,
     cliente_id,
     libros
   );
+  
   res.status(201).send({ nueva_venta: venta[0] });
 };
+
 
 const ventaControl = {
   name: "ventas",
