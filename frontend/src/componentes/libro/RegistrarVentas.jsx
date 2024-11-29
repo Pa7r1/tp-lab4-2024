@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../Auth";
 
-const RegistrarVenta = () => {
+const RegistrarVenta = ({actualizarLibros}) => {
   const [empleadoId, setEmpleadoId] = useState("");
   const [clienteId, setClienteId] = useState("");
   const [libros, setLibros] = useState([]);
@@ -12,7 +12,7 @@ const RegistrarVenta = () => {
   const { sesion } = useAuth();
 
   const handleAgregarLibro = () => {
-    if (libroId && cantidad > 0) {
+    if (libroId && parseInt(cantidad) > 0) {
       setLibros([...libros, { libro_id: parseInt(libroId), cantidad: parseInt(cantidad) }]);
       setLibroId("");
       setCantidad("");
@@ -42,15 +42,17 @@ const RegistrarVenta = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(ventaData),
+        
       });
-
+      // console.log(ventaData)
       const data = await response.json();
-
+      console.log(data)
       if (response.ok) {
-        setMensaje(`Venta registrada con éxito! ID de venta: ${data.venta_id}`);
+        window.alert(`Venta registrada con éxito!`);
         setEmpleadoId("");
         setClienteId("");
         setLibros([]);
+        actualizarLibros()
       } else {
         setMensaje(`Error: ${data.message}`);
       }

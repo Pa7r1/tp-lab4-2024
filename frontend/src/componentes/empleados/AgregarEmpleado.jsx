@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuth } from "../../Auth";
 
 const AgregarEmpleado = () => {
   const [formData, setFormData] = useState({
@@ -10,9 +11,11 @@ const AgregarEmpleado = () => {
     password: "",
     rol: "empleado",
   });
-
+// console.log(formData)
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
+
+  const {sesion} = useAuth()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +39,7 @@ const AgregarEmpleado = () => {
       });
 
       const data = await response.json();
-
+      // console.log(data)
       if (response.ok) {
         setMensaje(data.message); // Mostrar mensaje de éxito
       } else {

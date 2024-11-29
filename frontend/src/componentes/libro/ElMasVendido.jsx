@@ -1,17 +1,20 @@
 import React, { useState } from "react";
+import { useAuth } from "../../Auth";
 
 const LibrosMasVendidos = () => {
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
   const [libros, setLibros] = useState([]);
+  const {sesion} = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/libros/mas-vendidos", {
-        method: "GET",
+      const response = await fetch("http://localhost:3000/api/v1/ventas/libro", {
+        method: "POST",
         headers: {
+          Authorization: `Bearer ${sesion.token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ fecha_inicio: fechaInicio, fecha_fin: fechaFin }),
@@ -19,7 +22,8 @@ const LibrosMasVendidos = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setLibros(data); // Almacena los libros más vendidos
+        setLibros(data);
+        alert(`libro mas vendido: ${data}`) // Almacena los libros más vendidos
       } else {
         alert("Error al obtener los libros más vendidos.");
       }
