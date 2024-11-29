@@ -1,6 +1,12 @@
 import bcrypt from "bcrypt";
 import userModel from "../modelos/usuariosModelo.js";
 import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
+import {
+  validarCrearEmpleado,
+  validarEditarEmpleado,
+  validarId,
+  verificarValidaciones,
+} from "../middleware/validaciones.js";
 
 const empleadosActivos = async (req, res) => {
   const empleados = await userModel.verEmpleadosActivos();
@@ -48,13 +54,13 @@ const crearEmpleado = async (req, res) => {
 const editarEmpleado = async (req, res) => {
   const id = req.params.id;
   const datosEmpleado = req.body;
+
   await userModel.actualizarEmpleado(id, datosEmpleado);
   res.send({ mensaje: "empleado actualizado con exito" });
 };
 
 const despedirEmpleado = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   const despido = await userModel.deshabilitarEmpleado(id);
   res.send({ despedido: despido[0] });
 };
@@ -73,9 +79,31 @@ export default {
   name: "empleados",
   exEmpleados: [validarJwt, validarRol("administrador"), empleadoInactivo],
   empleadosActivos: [validarJwt, validarRol("administrador"), empleadosActivos],
-  show: [validarJwt, validarRol("administrador"), empleadosPorID],
-  create: [validarJwt, validarRol("administrador"), crearEmpleado],
-  update: [validarJwt, validarRol("administrador"), editarEmpleado],
-  delete: [validarJwt, validarRol("administrador"), despedirEmpleado],
-  volverContrato: [validarJwt, validarRol("administrador"), volverContrato],
+  show: [validarJwt, validarRol("administrador"), validarId, empleadosPorID],
+  create: [
+    validarJwt,
+    validarRol("administrador"),
+    validarCrearEmpleado(),
+    verificarValidaciones,
+    crearEmpleado,
+  ],
+  update: [
+    validarJwt,
+    validarRol("administrador"),
+    validarEditarEmpleado(),
+    verificarValidaciones,
+    editarEmpleado,
+  ],
+  delete: [
+    validarJwt,
+    validarRol("administrador"),
+    validarId(),
+    despedirEmpleado,
+  ],
+  volverContrato: [
+    validarJwt,
+    validarRol("administrador"),
+    validarId(),
+    volverContrato,
+  ],
 };
