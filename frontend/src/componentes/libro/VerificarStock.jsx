@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../Auth";
 
 const VerificarStock = () => {
-  var [stock, setStock] = useState([]);
+  const [stock, setStock] = useState([]);
   const [mensaje, setMensaje] = useState("");
   const {sesion} = useAuth()
-  console.log("Es un arreglo:", Array.isArray(stock));
-  console.log(stock)
+  // console.log("Es un arreglo:", Array.isArray(stock));
+  // console.log(stock)
   useEffect(() => {
     const fetchStock = async () => {
       try {
