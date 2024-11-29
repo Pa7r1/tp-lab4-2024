@@ -17,7 +17,6 @@ const crearEmpleado = async (req, res) => {
   try {
     const { nombre, cargo, salario, fecha_contrato, username, password } =
       req.body;
-
     if (req.user.rol !== "administrador") {
       return res.status(403).send({ mensaje: "Acceso denegado." });
     }
@@ -47,27 +46,32 @@ const crearEmpleado = async (req, res) => {
 };
 
 const editarEmpleado = async (req, res) => {
-  const empleado_id = req.params.empleado_id;
+  const id = req.params.id;
   const datosEmpleado = req.body;
-  await userModel.actualizarEmpleado(empleado_id, datosEmpleado);
+  await userModel.actualizarEmpleado(id, datosEmpleado);
   res.send({ mensaje: "empleado actualizado con exito" });
 };
 
 const despedirEmpleado = async (req, res) => {
-  const empleado_id = req.params.empleado_id;
-  console.log(empleado_id);
-  const despido = await userModel.deshabilitarEmpleado(empleado_id);
-  res.send({ empleado_despedido: despido[0] });
+  const id = req.params.id;
+  console.log(id);
+  const despido = await userModel.deshabilitarEmpleado(id);
+  res.send({ despedido: despido[0] });
+};
+const empleadoInactivo = async (req, res) => {
+  const empleados = await userModel.exEmpleados();
+  res.status(200).send({ DESPEDIDOS: empleados[0] });
 };
 
 const volverContrato = async (req, res) => {
-  const empleado_id = req.params.empleado_id;
-  const reContrato = await userModel.habilitarEmpleado(empleado_id);
+  const id = req.params.id;
+  console.log(id);
+  const reContrato = await userModel.habilitarEmpleado(id);
   res.send({ contratado_nuevamente: reContrato[0] });
 };
 export default {
   name: "empleados",
-  prefix: "/empleados",
+  exEmpleados: [validarJwt, validarRol("administrador"), empleadoInactivo],
   empleadosActivos: [validarJwt, validarRol("administrador"), empleadosActivos],
   show: [validarJwt, validarRol("administrador"), empleadosPorID],
   create: [validarJwt, validarRol("administrador"), crearEmpleado],

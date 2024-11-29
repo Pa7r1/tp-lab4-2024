@@ -42,10 +42,11 @@ export const configureRoutes = (app, baseDir = "./controladores") => {
             case "verStock":
               method = "get";
               url = `/${name}`;
+              break;
             case "noMenos":
               method = "get";
               url = `/${name}/minimo`;
-
+              break;
             //empleados
             case "empleadosActivos":
               method = "get";
@@ -53,36 +54,40 @@ export const configureRoutes = (app, baseDir = "./controladores") => {
               break;
             case "volverContrato":
               method = "put";
-              url = `/${name}/:id`;
+              url = `/${name}/habilitar/:id`;
+              break;
+            case "exEmpleados":
+              method = "get";
+              url = `/${name}/despedidos`;
               break;
 
             //ventas
+            case "todasventas":
+              method = "get";
+              url = `/${name}/`;
+              break;
             case "ventasHoy":
               method = "get";
-              url = `/${name}`;
+              url = `/${name}/hoy`;
               break;
             case "ventas_fecha":
               method = "get";
-              url = `/${name}`;
-              break;
-            case "ventas_fecha":
-              method = "get";
-              url = `/${name}`;
-              break;
-            case "ventas_fecha":
-              method = "get";
-              url = `/${name}`;
+              url = `/${name}/reporte`;
               break;
             case "librosFecha":
               method = "get";
-              url = `/${name}`;
+              url = `/${name}/libro`;
               break;
 
             case "gananciaDia":
               method = "get";
+              url = `/${name}/ganancia`;
+              break;
+            //proveedor
+            case "verProvedor":
+              method = "get";
               url = `/${name}`;
               break;
-
             //comunes
             case "create":
               method = "post";
