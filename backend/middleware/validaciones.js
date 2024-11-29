@@ -1,6 +1,6 @@
-import { param, body, validationResult } from "express-validator";
+import { query, param, body, validationResult } from "express-validator";
 
-export const validarId = () => [ param("id").isInt({ min: 1 }) ];
+export const validarId = () => [param("id").isInt({ min: 1 })];
 
 //middleware para verificar las validaciones
 export const verificarValidaciones = (req, res, next) => {
@@ -11,7 +11,7 @@ export const verificarValidaciones = (req, res, next) => {
   next();
 };
 
-//middleware para validar la edición de empleado
+//edición de empleado listo
 export const validarEditarEmpleado = () => [
   param("id")
     .notEmpty()
@@ -20,37 +20,44 @@ export const validarEditarEmpleado = () => [
     .withMessage("El ID del empleado debe ser un número entero positivo."),
   body("nombre")
     .optional()
+    .notEmpty()
+    .withMessage("nombre no puede estar vacio")
     .isString()
+    .isAlpha()
     .isLength({ max: 150 })
     .withMessage("El nombre no debe exceder los 150 caracteres."),
   body("cargo")
     .optional()
+    .notEmpty()
     .isString()
+    .isAlpha()
     .isLength({ max: 100 })
     .withMessage("El cargo no debe exceder los 100 caracteres."),
   body("salario")
     .optional()
-    .isDecimal({ min: 0 })
+    .isFloat({ min: 0 })
     .withMessage("El salario debe ser un número decimal positivo."),
-  body("fecha_contrato")
+  body("fecha_contratacion")
     .optional()
+    .notEmpty()
     .isISO8601()
-    .withMessage("La fecha de contrato debe tener un formato válido (YYYY-MM-DD)."),
+    .withMessage(
+      "La fecha de contrato debe tener un formato válido (YYYY-MM-DD)."
+    ),
 ];
 
 //middleware validar ingresos de datos de usuario
 export const validarUsuario = () => [
-    body("username").isAlphanumeric().notEmpty().isLength({ max: 25 }),
+  body("username").isAlphanumeric().notEmpty().isLength({ max: 25 }),
   body("password").isStrongPassword({
-      minLength: 8,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 0,
-    }),
-    body("rol").isAlpha().notEmpty().isLength({ max: 45 }),
-  ];
-  
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 0,
+  }),
+  body("rol").isAlpha().notEmpty().isLength({ max: 45 }),
+];
 
 //middleware para validar el nuevo libro
 export const validarNuevoLibro = () => [
@@ -68,10 +75,22 @@ export const validarNuevoLibro = () => [
 //middleware para validar la edición de un libro
 export const validarEdicionLibro = () => [
   param("libro_id").isInt({ min: 1 }),
-  body("i_titulo").optional().isString().isLength({ max: 200 }),
-  body("i_genero_nombre").optional().isString().isLength({ max: 100 }),
-  body("i_autor_nombre").optional().isString().isLength({ max: 150 }),
-  body("i_editorial_nombre").optional().isString().isLength({ max: 150 }),
+  body("i_titulo")
+    .optional()
+    .isString()
+    .isAlphanumeric()
+    .isLength({ max: 200 }),
+  body("i_genero_nombre")
+    .optional()
+    .isString()
+    .isAlpha()
+    .isLength({ max: 100 }),
+  body("i_autor_nombre").optional().isString().isAlpha().isLength({ max: 150 }),
+  body("i_editorial_nombre")
+    .optional()
+    .isString()
+    .isAlpha()
+    .isLength({ max: 150 }),
   body("i_año").optional().isInt({ min: 1800, max: new Date().getFullYear() }),
   body("i_precio_venta").optional().isDecimal({ min: 0 }),
   body("i_precio_alquiler").optional().isDecimal({ min: 0 }),
@@ -97,7 +116,6 @@ export const validarCrearEmpleado = () => [
   body("rol").notEmpty().isIn(["administrador", "empleado"]),
   //verificarValidaciones,
 ];
-
 
 //middleware de validación para crear proveedor
 export const validarCrearProveedor = () => [
@@ -126,15 +144,17 @@ export const validarAgregarStock = () => [
     .withMessage("El ID del libro es requerido.")
     .isInt({ min: 1 })
     .withMessage("El ID del libro debe ser un número entero positivo."),
-  
-// validar nombre de proveedor
-    body("nombre_proveedor")
+
+  // validar nombre de proveedor
+  body("nombre_proveedor")
     .notEmpty()
     .withMessage("El nombre del proveedor es requerido.")
     .isString()
     .withMessage("El nombre del proveedor debe ser una cadena de texto.")
     .isLength({ max: 150 })
-    .withMessage("El nombre del proveedor no puede exceder los 150 caracteres."),
+    .withMessage(
+      "El nombre del proveedor no puede exceder los 150 caracteres."
+    ),
 
   // Validar que cantidad sea un número positivo
   body("cantidad")
@@ -147,7 +167,9 @@ export const validarAgregarStock = () => [
   body("costo_compra")
     .optional()
     .isDecimal({ decimal_digits: "0,2" })
-    .withMessage("El costo de compra debe ser un número decimal con hasta dos decimales.")
+    .withMessage(
+      "El costo de compra debe ser un número decimal con hasta dos decimales."
+    )
     .custom((value) => value >= 0)
     .withMessage("El costo de compra debe ser positivo o cero."),
 
@@ -176,7 +198,10 @@ export const validarFechas = () => [
 
 //middleware para validar fechas individuales (ventasHoy, gananciaDia)
 export const validarFechaIndividual = () => [
-  query("fecha").optional().isDate().withMessage("La fecha debe tener un formato válido (YYYY-MM-DD)."),
+  query("fecha")
+    .optional()
+    .isDate()
+    .withMessage("La fecha debe tener un formato válido (YYYY-MM-DD)."),
   //verificarValidaciones,
 ];
 

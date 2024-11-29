@@ -44,6 +44,7 @@ const verEmpleadoPorId = async (id) => {
 
 const actualizarEmpleado = async (id, datosEmpleado) => {
   const { nombre, cargo, salario, fecha_contratacion } = datosEmpleado;
+  console.log(nombre, cargo, salario, fecha_contratacion);
   const sql = `UPDATE empleados SET nombre = ?, cargo = ?, salario = ?, fecha_contratacion = ? WHERE id = ?`;
   const [result] = await db.execute(sql, [
     nombre,
