@@ -56,6 +56,10 @@ export const configureRoutes = (app, baseDir = "./controladores") => {
               method = "put";
               url = `/${name}/habilitar/:id`;
               break;
+            case "exEmpleados":
+              method = "get";
+              url = `/${name}/despedidos`;
+              break;
 
             //ventas
             case "todasventas":
@@ -79,7 +83,11 @@ export const configureRoutes = (app, baseDir = "./controladores") => {
               method = "get";
               url = `/${name}/ganancia`;
               break;
-
+            //proveedor
+            case "verProvedor":
+              method = "get";
+              url = `/${name}`;
+              break;
             //comunes
             case "create":
               method = "post";

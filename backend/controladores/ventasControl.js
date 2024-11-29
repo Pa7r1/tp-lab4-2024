@@ -2,21 +2,59 @@ import ventasModel from "../modelos/ventasModelo.js";
 import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
 
 const ventas = async (req, res) => {
-  const todaslasVentas = await ventasModel.todas();
-  res.send({ VENTAS: todaslasVentas[0] });
+  const { page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
+
+  const { detallesVentas, totalVentas } = await ventasModel.todas(
+    offset,
+    parseInt(limit)
+  );
+
+  const totalPages = Math.ceil(totalVentas / limit);
+
+  res.status(200).send({
+    VENTAS: detallesVentas,
+    paginacion: {
+      totalVentas,
+      currentPage: parseInt(page),
+      totalPages,
+      limit: parseInt(limit),
+    },
+  });
 };
 
 const ventasDiarias = async (req, res) => {
-  const fecha = req.query.fecha || new Date().toISOString().split("T")[0];
-  const ventasDia = await ventasModel.calculoVentasDiarias(fecha);
-  res.send({ ventasDelDia: ventasDia[0] });
+  const fecha = req.query.fecha;
+  let hoy = new Date().toISOString().split("T")[0];
+  if (fecha) {
+    const ventasDia = await ventasModel.calculoVentasDiarias(fecha);
+    res.send({ ventasDelDia: ventasDia[0] });
+  } else {
+    const ventasDia = await ventasModel.calculoVentasDiarias(hoy);
+    res.send({ ventasDelDia: ventasDia[0] });
+  }
 };
 
 const libroMasVendido = async (req, res) => {
   const fehca_i = req.query.fecha_i;
   const fecha_f = req.query.fecha_f;
-  const libro = await ventasModel.calculoLibroMvendido(fehca_i, fecha_f);
-  res.send({ El_Mas_Vendido: libro[0] });
+
+  let hoy = new Date();
+  let hoyMenosTres = new Date(hoy.getTime() - 3 * 24 * 60 * 60 * 1000);
+
+  let fechaActual = hoy.toISOString().split("T")[0];
+  let fechaRestada = hoyMenosTres.toISOString().split("T")[0];
+
+  if (fehca_i && fecha_f) {
+    const libro = await ventasModel.calculoLibroMvendido(fehca_i, fecha_f);
+    res.send({ El_Mas_Vendido: libro[0] });
+  } else {
+    const libro = await ventasModel.calculoLibroMvendido(
+      fechaRestada,
+      fechaActual
+    );
+    res.send({ El_Mas_Vendido: libro[0] });
+  }
 };
 
 const gananciaDiaria = async (req, res) => {
