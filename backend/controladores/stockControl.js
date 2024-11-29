@@ -1,3 +1,8 @@
+import {
+  validarAgregarStock,
+  validarLibroStockBajo,
+  verificarValidaciones,
+} from "../middleware/validaciones.js";
 import proveedorModel from "../modelos/proveedorModel.js";
 import stockModel from "../modelos/stockModelo.js";
 
@@ -39,7 +44,7 @@ const agregarStock = async (req, res) => {
 
 export default {
   name: "stock",
-  noMenos: libroStockBajo,
-  update: agregarStock,
+  noMenos: [validarLibroStockBajo(), verificarValidaciones, libroStockBajo],
+  update: [validarAgregarStock(), verificarValidaciones, agregarStock],
   verStock: stockDisponible,
 };
