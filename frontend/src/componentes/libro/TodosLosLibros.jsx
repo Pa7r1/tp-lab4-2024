@@ -5,8 +5,8 @@ const ListaLibrosActivos = () => {
   var [libritos, setLibritos] = useState([]);
   const [error, setError] = useState("");
   const {sesion} = useAuth()
-  console.log("Libros recibidos:", libritos);
-  console.log("Es un arreglo:", Array.isArray(libritos));
+  // console.log("Libros recibidos:", libritos);
+  // console.log("Es un arreglo:", Array.isArray(libritos));
 
   useEffect(() => {
     const fetchLibros = async () => {
@@ -36,7 +36,7 @@ const ListaLibrosActivos = () => {
   return (
     <div style={{backgroundColor: "#d8cdc4"}}>
         
-      <h2>Libros Activos</h2>
+      
       <table>
         <thead>
           <tr>

@@ -102,6 +102,7 @@ const AgregarLibro = ({actualizarLibros}) => {
         onChange={handleChange}
         required
       />
+      <Button variant="contained" type="submit">Agregar Libro</Button>
       </div>
       <div>
       <input
@@ -131,7 +132,8 @@ const AgregarLibro = ({actualizarLibros}) => {
         required
       />
       </div>
-      <Button variant="contained" type="submit">Agregar Libro</Button>
+      
+      
     </form>
   );
 };
