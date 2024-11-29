@@ -58,6 +58,10 @@ const despedirEmpleado = async (req, res) => {
   const despido = await userModel.deshabilitarEmpleado(id);
   res.send({ despedido: despido[0] });
 };
+const empleadoInactivo = async (req, res) => {
+  const empleados = await userModel.exEmpleados();
+  res.status(200).send({ DESPEDIDOS: empleados[0] });
+};
 
 const volverContrato = async (req, res) => {
   const id = req.params.id;
@@ -67,6 +71,7 @@ const volverContrato = async (req, res) => {
 };
 export default {
   name: "empleados",
+  exEmpleados: [validarJwt, validarRol("administrador"), empleadoInactivo],
   empleadosActivos: [validarJwt, validarRol("administrador"), empleadosActivos],
   show: [validarJwt, validarRol("administrador"), empleadosPorID],
   create: [validarJwt, validarRol("administrador"), crearEmpleado],

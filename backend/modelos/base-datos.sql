@@ -1,4 +1,19 @@
+-- MySQL Workbench Forward Engineering
 
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema libreria
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema libreria
+-- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `libreria` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `libreria` ;
 
@@ -14,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`empleados` (
   `activo` TINYINT(1) NULL DEFAULT '1',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -67,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`autores` (
   `nombre` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -93,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`editoriales` (
   `nombre` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -127,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`libros` (
     FOREIGN KEY (`editorial_id`)
     REFERENCES `libreria`.`editoriales` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -175,6 +190,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`ventas` (
     FOREIGN KEY (`cliente_id`)
     REFERENCES `libreria`.`clientes` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -198,6 +214,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`detalles_ventas` (
     FOREIGN KEY (`libro_id`)
     REFERENCES `libreria`.`libros` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -216,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`inventario_libros` (
     FOREIGN KEY (`libro_id`)
     REFERENCES `libreria`.`libros` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 10
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -236,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`movimientos_inventario` (
     FOREIGN KEY (`libro_id`)
     REFERENCES `libreria`.`libros` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 9
+AUTO_INCREMENT = 30
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -253,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`proveedores` (
   `fecha_registro` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -278,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`reposiciones_proveedores` (
     FOREIGN KEY (`libro_id`)
     REFERENCES `libreria`.`libros` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -299,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`usuarios` (
     FOREIGN KEY (`empleado_id`)
     REFERENCES `libreria`.`empleados` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -766,7 +783,9 @@ USE `libreria`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `busquedaAvanzada`(
     IN i_titulo VARCHAR(200),
     IN i_autor_nombre VARCHAR(150),
-    IN i_isbn VARCHAR(20)
+    IN i_isbn VARCHAR(20),
+	IN i_offset INT,
+    IN i_limit INT
 )
 BEGIN
     SELECT 
@@ -786,7 +805,8 @@ BEGIN
     WHERE 
         (i_titulo IS NULL OR l.titulo LIKE CONCAT('%', i_titulo, '%')) AND
         (i_autor_nombre IS NULL OR a.nombre LIKE CONCAT('%', i_autor_nombre, '%')) AND
-        (i_isbn IS NULL OR l.isbn LIKE CONCAT('%', i_isbn, '%'));
+        (i_isbn IS NULL OR l.isbn LIKE CONCAT('%', i_isbn, '%'))
+	LIMIT i_offset, i_limit;
 END$$
 
 DELIMITER ;
@@ -999,7 +1019,7 @@ BEGIN
         il.cantidad AS stock
     FROM libros l
     INNER JOIN inventario_libros il ON l.id = il.libro_id
-    WHERE il.cantidad < nivel_minimo;
+    WHERE il.cantidad <= minimo_stock;
 END$$
 
 DELIMITER ;
@@ -1043,6 +1063,83 @@ BEGIN
     WHERE v.fecha_venta BETWEEN fecha_inicio AND fecha_fin
     GROUP BY l.id, l.titulo
     ORDER BY total_vendido DESC;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure obtenerVentas
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `libreria`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerVentas`(
+    IN i_offset INT,      -- Para la paginación (número de la página)
+    IN i_limit INT        -- Para la paginación (número de elementos por página)
+)
+BEGIN
+    -- Obtener las ventas con los detalles de cada una
+    SELECT 
+        v.id AS venta_id,
+        v.fecha_venta,
+        v.total AS total_venta,
+        e.nombre AS nombre_empleado,
+        c.nombre AS nombre_cliente,
+        dv.libro_id,
+        l.titulo AS titulo_libro,
+        dv.cantidad,
+        dv.precio_unitario,
+        (dv.cantidad * dv.precio_unitario) AS sub_total
+    FROM ventas v
+    JOIN empleados e ON v.empleado_id = e.id
+    JOIN clientes c ON v.cliente_id = c.id
+    JOIN detalles_ventas dv ON v.id = dv.venta_id
+    JOIN libros l ON dv.libro_id = l.id
+    ORDER BY v.fecha_venta DESC  -- Ordenado por fecha, más reciente primero
+    LIMIT i_offset, i_limit;     -- Pagina los resultados
+
+    -- Obtener el total de ventas (para paginación)
+    SELECT COUNT(DISTINCT v.id) AS total_ventas
+    FROM ventas v
+    JOIN detalles_ventas dv ON v.id = dv.venta_id;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure obtenerVentasConPaginacion
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `libreria`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerVentasConPaginacion`(
+    IN i_offset INT, 
+    IN i_limit INT
+)
+BEGIN
+    SELECT 
+        v.id AS venta_id,
+        v.fecha_venta,
+        v.total AS total_venta,
+        e.nombre AS nombre_empleado,
+        c.nombre AS nombre_cliente,
+        dv.libro_id,
+        l.titulo AS titulo_libro,
+        dv.cantidad,
+        dv.precio_unitario,
+        (dv.cantidad * dv.precio_unitario) AS sub_total
+    FROM ventas v
+    JOIN empleados e ON v.empleado_id = e.id
+    JOIN clientes c ON v.cliente_id = c.id
+    JOIN detalles_ventas dv ON v.id = dv.venta_id
+    JOIN libros l ON dv.libro_id = l.id
+    ORDER BY v.fecha_venta DESC  -- Ordenado por fecha, más reciente primero
+    LIMIT i_offset, i_limit;  
+
+    -- Total de registros 
+    SELECT COUNT(*) AS total_ventas
+    FROM ventas v
+    JOIN detalles_ventas dv ON v.id = dv.venta_id;
 END$$
 
 DELIMITER ;
@@ -1178,6 +1275,88 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure registrarVentasMultiple
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `libreria`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarVentasMultiple`(
+    IN i_empleado_id INT,
+    IN i_cliente_id INT,
+    IN i_libros JSON -- Array de objetos {libro_id, cantidad}
+)
+BEGIN
+    DECLARE v_total DECIMAL(10,2) DEFAULT 0;
+    DECLARE v_precio_unitario DECIMAL(10,2);
+    DECLARE v_stock_actual INT;
+    DECLARE v_libro_id INT;
+    DECLARE v_cantidad INT;
+    DECLARE v_num_libros INT;
+
+    -- Insertar la venta principal
+    INSERT INTO ventas (empleado_id, cliente_id, total)
+    VALUES (i_empleado_id, i_cliente_id, 0);
+    SET @id_venta = LAST_INSERT_ID();
+
+    -- Obtenemos la cantidad de libros en el JSON
+    SET v_num_libros = JSON_LENGTH(i_libros);
+
+    -- Iterar por los libros en el JSON
+    WHILE v_num_libros > 0 DO
+        -- Extraemos el libro y la cantidad
+        SET v_libro_id = JSON_UNQUOTE(JSON_EXTRACT(i_libros, '$[0].libro_id'));
+        SET v_cantidad = JSON_UNQUOTE(JSON_EXTRACT(i_libros, '$[0].cantidad'));
+
+        -- Eliminar el primer libro del arreglo para la siguiente iteración
+        SET i_libros = JSON_REMOVE(i_libros, '$[0]');
+        
+        -- Actualizar la cantidad de libros restantes
+        SET v_num_libros = JSON_LENGTH(i_libros);
+
+        -- Validar stock y calcular precios
+        SELECT precio_venta INTO v_precio_unitario FROM libros WHERE id = v_libro_id;
+        SELECT cantidad INTO v_stock_actual FROM inventario_libros WHERE libro_id = v_libro_id;
+
+        IF v_stock_actual < v_cantidad THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'NO HAY STOCK DISPONIBLE';
+        END IF;
+
+        SET v_total = v_total + (v_cantidad * v_precio_unitario);
+
+        -- Insertar en detalles de ventas
+        INSERT INTO detalles_ventas (venta_id, libro_id, cantidad, precio_unitario)
+        VALUES (@id_venta, v_libro_id, v_cantidad, v_precio_unitario);
+
+        -- Insertar en movimientos del inventario
+        INSERT INTO movimientos_inventario (libro_id, tipo_movimiento, cantidad, fecha)
+        VALUES (v_libro_id, 'venta', v_cantidad, NOW());
+
+        -- Actualizar inventario
+        UPDATE inventario_libros SET cantidad = v_stock_actual - v_cantidad, fecha_actualizacion = NOW()
+        WHERE libro_id = v_libro_id;
+    END WHILE;
+
+    -- Actualizar el total de la venta
+    UPDATE ventas SET total = v_total WHERE id = @id_venta;
+
+    -- Retornar los detalles de la venta
+    SELECT 
+        v.id AS venta_id,
+        v.fecha_venta,
+        v.total AS total_venta,
+        dv.libro_id,
+        l.titulo AS titulo_libro,
+        dv.cantidad,
+        dv.precio_unitario
+    FROM ventas v
+    JOIN detalles_ventas dv ON v.id = dv.venta_id
+    JOIN libros l ON dv.libro_id = l.id
+    WHERE v.id = @id_venta;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- procedure verEmpleadosActivos
 -- -----------------------------------------------------
 
@@ -1189,6 +1368,22 @@ BEGIN
    FROM empleados e 
    INNER JOIN usuarios u ON e.id = u.empleado_id
    WHERE activo = 1;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure verEmpleadosInactivos
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `libreria`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `verEmpleadosInactivos`()
+BEGIN
+   SELECT e.id, e.nombre, e.cargo, e.salario, e.fecha_contratacion, u.username, u.rol
+   FROM empleados e 
+   INNER JOIN usuarios u ON e.id = u.empleado_id
+   WHERE activo = 0;
 END$$
 
 DELIMITER ;
