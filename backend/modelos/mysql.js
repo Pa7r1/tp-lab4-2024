@@ -8,15 +8,16 @@ const configDB = {
   database: configDatabase.mysql.database,
 };
 
-export let db;
+let db;
 
 export async function dbConnection() {
   try {
     db = await mysql.createConnection(configDB);
     console.log("base de datos conectada");
+    return db;
   } catch (error) {
     console.error("error de conexion en la base de datos", error.message);
   }
 }
 
-dbConnection();
+export { db };

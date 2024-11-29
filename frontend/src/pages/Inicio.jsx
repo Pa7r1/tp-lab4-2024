@@ -1,83 +1,63 @@
 import * as React from "react";
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
 import PasswordIcon from "@mui/icons-material/Password";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Button from "@mui/material/Button";
+import { useAuth } from "../Auth";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function InputWithIcon() {
-  const [usuario, setUsuario] = useState("");
-  const [contraseña, setContraseña] = useState("");
-  const [mensaje, setMensaje] = useState("");
 
-  const localhost = "http://localhost:3000/api/v1";
+export default function Inicio() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [error, setError] = useState(false);
 
-  const handleSumbit = async () => {
-    const respuestas = await fetch(`${localhost}/login-empleados`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ usuario, contraseña }),
-    });
-    const data = await respuestas.json();
+  const from = location.state?.from?.pathname || "/";
 
-    if (respuestas.ok) {
-      setMensaje(`Bienvenido, ${usuario}`);
-    } else {
-      setMensaje(datos.mensaje || "error desconocido");
-    }
+  const onSubmit = (event) => {
+    const formData = new FormData(event.currentTarget);
+    const usuario = formData.get("usuario");
+    const password = formData.get("password");
+
+    login(
+      usuario,
+      password,
+      () => navigate(from, { replace: true }), // OK
+      () => setError(true) // Error
+    );
+
+    event.preventDefault();
   };
 
   return (
-    <Box
-      sx={{
-        borderStyle: "inset",
-        textAlign: "center",
-        backgroundColor: "#d8cdc4",
-        "& > :not(style)": { m: 3, height: 75 },
-      }}
-    >
-      <h1>Iniciar Sesión</h1>
-      <FormControl sx={{ width: 500 }} variant="standard">
-        <InputLabel htmlFor="input-with-icon-adornment">Usuario</InputLabel>
-        <Input
-          id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          }
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
-        />
-      </FormControl>
-      <br />
-      <FormControl sx={{ width: 500 }} variant="standard">
-        <InputLabel htmlFor="input-with-icon-adornment">Contraseña</InputLabel>
-        <Input
-          id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              <PasswordIcon />
-            </InputAdornment>
-          }
-          value={contraseña}
-          onChange={(e) => setContraseña(e.target.value)}
-        />
-      </FormControl>
+    <>
+      <form
+        style={{ borderStyle: "inset", textAlign: "center", backgroundColor: "#d8cdc4", height: 450, width:1150 }}
+        onSubmit={onSubmit} >
+          <h1>Iniciar de sesión</h1>
+        <div style={{ fontSize: 40,margin:30 }}>
+          <label htmlFor="usuario">
+            <AccountCircle />
+          </label>
+          <input
+            style={{ flex: 1, padding: "0.8rem", fontSize: "1.2rem", border: "1px solid #ccc", borderRadius: 5 }}
+            name="usuario" placeholder="Usuario" type="text" />
+        </div>
+        <br />
+        <div style={{ fontSize: 40 }}>
+          <label htmlFor="password"><PasswordIcon /></label>
+          <input
+            style={{ flex: 1, padding: "0.8rem", fontSize: "1.2rem", border: "1px solid #ccc", borderRadius: 5 }}
+            name="password" placeholder="Contraseña" type="password" />
+        </div>
+        <br />
+        <div>
+          <button style={{backgroundColor: "#b6293a", color:"#ffff", width:250, height:50,margin:40, borderRadius:8}} type="submit">Ingresar</button>
+        </div >
+        {error && <h1>Usuario o contraseña inválido</h1>}
+      </form>
+      
 
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          variant="contained"
-          sx={{ width: 500, borderRadius: 2 }}
-          onClick={handleSumbit}
-        >
-          Ingresar
-        </Button>
-      </Box>
-    </Box>
+    </>
   );
 }

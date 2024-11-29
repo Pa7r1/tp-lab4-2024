@@ -7,7 +7,7 @@ const login = async (req, res) => {
 
   const [usuario] = await userModel.usuarios(username);
 
-  if (usuario.length === 0) {
+  if (!usuario || usuario.length == 0) {
     return res.status(400).send({ mensaje: "usuario o contraseña invalidos" });
   }
 
@@ -30,4 +30,7 @@ const login = async (req, res) => {
   });
 };
 
-export default login;
+export default {
+  name: "login",
+  create: login,
+};

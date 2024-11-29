@@ -1,12 +1,17 @@
 import { db } from "./mysql.js";
 
+const todas = async () => {
+  const sql = `CALL todasVentas()`;
+  const [result] = await db.execute(sql);
+  return result;
+};
+
 const registrarVenta = async (empleado_id, cliente_id, libro_id, cantidad) => {
-  const sql = `CALL registrarVentas(?,?,?,?)`;
+  const sql = `CALL registrarVentasMultiple(?,?,?)`;
   const [result] = await db.execute(sql, [
     empleado_id,
     cliente_id,
-    libro_id,
-    cantidad,
+    JSON.stringify(libros),
   ]);
   return [result];
 };
@@ -41,6 +46,7 @@ const ventasModel = {
   calculoGananciaDiaria,
   calculoLibroMvendido,
   registrarVenta,
+  todas,
 };
 
 export default ventasModel;
