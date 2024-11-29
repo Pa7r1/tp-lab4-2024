@@ -8,9 +8,11 @@ const RegistrarVenta = () => {
   const [cantidad, setCantidad] = useState("");
   const [mensaje, setMensaje] = useState("");
 
+  const {sesion} = useAuth()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const {sesion} = useAuth()
+    
     
     const ventaData = {
       empleado_id: empleadoId,
@@ -20,7 +22,7 @@ const RegistrarVenta = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/venta", {
+      const response = await fetch("http://localhost:3000/api/v1/ventas", {
         method: "POST",
         headers: {
           Authetication :`Bearer ${sesion.token}`,

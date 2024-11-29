@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import {useAuth} from  "../../Auth"
-const AgregarLibro = () => {
+import { Button } from "@mui/material";
+
+const AgregarLibro = ({actualizarLibros}) => {
 
   const {sesion} = useAuth()
   
   const [formulario, setFormulario] = useState({
-    titulo: "",
+    titulo: "", 
     isbn: "",
     genero_nombre: "",
     autor_nombre: "",
@@ -36,6 +38,7 @@ const AgregarLibro = () => {
       if (response.ok) {
         const data = await response.json();
         alert("Libro agregado con éxito: " + JSON.stringify(data));
+        actualizarLibros()
       } else {
         alert("Error al agregar el libro.");
       }
@@ -45,7 +48,8 @@ const AgregarLibro = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form style={{backgroundColor: "#d8cdc4", justifyContent:"center"}} onSubmit={handleSubmit}>
+    <div>
       <input
         type="text"
         name="titulo"
@@ -54,6 +58,7 @@ const AgregarLibro = () => {
         onChange={handleChange}
         required
       />
+      
       <input
         type="number"
         name="isbn"
@@ -62,6 +67,7 @@ const AgregarLibro = () => {
         onChange={handleChange}
         required
       />
+      
       <input
         type="text"
         name="genero_nombre"
@@ -70,6 +76,8 @@ const AgregarLibro = () => {
         onChange={handleChange}
         required
       />
+      </div> 
+      <div>
       <input
         type="text"
         name="autor_nombre"
@@ -94,6 +102,8 @@ const AgregarLibro = () => {
         onChange={handleChange}
         required
       />
+      </div>
+      <div>
       <input
         type="number"
         name="stock_inicial"
@@ -120,7 +130,8 @@ const AgregarLibro = () => {
         onChange={handleChange}
         required
       />
-      <button type="submit">Agregar Libro</button>
+      </div>
+      <Button variant="contained" type="submit">Agregar Libro</Button>
     </form>
   );
 };
