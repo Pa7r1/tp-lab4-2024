@@ -6,7 +6,7 @@ const AgregarEmpleado = () => {
     nombre: "",
     cargo: "",
     salario: "",
-    fecha_contratacion: "",
+    fecha_contrato: "",
     username: "",
     password: "",
     rol: "empleado",
@@ -37,13 +37,13 @@ const AgregarEmpleado = () => {
         },
         body: JSON.stringify(formData),
       });
-
+      console.log(formData)
       const data = await response.json();
-      // console.log(data)
+      console.log(data)
       if (response.ok) {
-        setMensaje(data.message); // Mostrar mensaje de éxito
+        setMensaje(data.message);
       } else {
-        setError(data.message || "Hubo un error al agregar el empleado.");
+        alert(data.message || "Hubo un error al agregar el empleado.");
       }
     } catch (error) {
       console.error("Error al agregar el empleado:", error);
@@ -93,11 +93,11 @@ const AgregarEmpleado = () => {
         </div>
 
         <div>
-          <label>Fecha de Contratación:</label>
+          <label>Fecha de Contrato:</label>
           <input
             type="date"
-            name="fecha_contratacion"
-            value={formData.fecha_contratacion}
+            name="fecha_contrato"
+            value={formData.fecha_contrato}
             onChange={handleChange}
             required
           />
