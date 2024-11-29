@@ -17,6 +17,7 @@ const crearEmpleado = async (req, res) => {
   try {
     const { nombre, cargo, salario, fecha_contrato, username, password } =
       req.body;
+      console.log(req.body)
     if (req.user.rol !== "administrador") {
       return res.status(403).send({ mensaje: "Acceso denegado." });
     }

@@ -7,7 +7,7 @@ const verProveedores = async (req, res) => {
 };
 const nuevoProveedor = async (req, res) => {
   const { nombre, telefono, email, direccion } = req.body;
-  const [newProveedor] = await proveedorModel.agreagarProveedor(
+  const [newProveedor] = await proveedorModel.agregarProveedor(
     nombre,
     telefono,
     email,
