@@ -1,6 +1,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userModel from "../modelos/usuariosModelo.js";
+import {
+  validarUsuario,
+  verificarValidaciones,
+} from "../middleware/validaciones.js";
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -32,5 +36,5 @@ const login = async (req, res) => {
 
 export default {
   name: "login",
-  create: login,
+  create: [validarUsuario(), verificarValidaciones, login],
 };

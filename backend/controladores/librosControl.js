@@ -1,5 +1,11 @@
 import bookModel from "../modelos/librosModelo.js";
 import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
+import {
+  validarEdicionLibro,
+  validarId,
+  validarNuevoLibro,
+  verificarValidaciones,
+} from "../middleware/validaciones.js";
 
 const todos = async (req, res) => {
   const libros = await bookModel.all();
@@ -107,9 +113,33 @@ export default {
   name: "libros",
   librosActivos: todos,
   librosInactivos: [validarJwt, validarRol("administrador"), todosBorrados],
-  update: [validarJwt, validarRol("administrador"), editLibro],
-  create: [validarJwt, validarRol("administrador"), nuevoLibro],
-  delete: [validarJwt, validarRol("administrador"), deshabilitarLibro],
-  habilitarLibroN: [validarJwt, validarRol("administrador"), habilitarLibro],
+  update: [
+    validarJwt,
+    validarRol("administrador"),
+    validarEdicionLibro(),
+    verificarValidaciones,
+    editLibro,
+  ],
+  create: [
+    validarJwt,
+    validarRol("administrador"),
+    validarNuevoLibro(),
+    verificarValidaciones,
+    nuevoLibro,
+  ],
+  delete: [
+    validarJwt,
+    validarRol("administrador"),
+    validarId(),
+    verificarValidaciones,
+    deshabilitarLibro,
+  ],
+  habilitarLibroN: [
+    validarJwt,
+    validarRol("administrador"),
+    validarId(),
+    verificarValidaciones,
+    habilitarLibro,
+  ],
   search: buscarLibro,
 };

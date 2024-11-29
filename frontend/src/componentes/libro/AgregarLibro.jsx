@@ -37,7 +37,7 @@ const AgregarLibro = ({actualizarLibros}) => {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Libro agregado con éxito: " + JSON.stringify(data));
+        alert("Libro agregado con éxito: ");
         actualizarLibros()
       } else {
         alert("Error al agregar el libro.");
@@ -102,6 +102,7 @@ const AgregarLibro = ({actualizarLibros}) => {
         onChange={handleChange}
         required
       />
+      <Button variant="contained" type="submit">Agregar Libro</Button>
       </div>
       <div>
       <input
@@ -131,7 +132,8 @@ const AgregarLibro = ({actualizarLibros}) => {
         required
       />
       </div>
-      <Button variant="contained" type="submit">Agregar Libro</Button>
+      
+      
     </form>
   );
 };
