@@ -67,6 +67,12 @@ const habilitarEmpleado = async (id) => {
   return result;
 };
 
+const exEmpleados = async () => {
+  const sql = `CALL verEmpleadosInactivos()`;
+  const [result] = await db.execute(sql);
+  return result;
+};
+
 const userModel = {
   usuarios,
   agregarEmpleado,
@@ -75,6 +81,7 @@ const userModel = {
   actualizarEmpleado,
   deshabilitarEmpleado,
   habilitarEmpleado,
+  exEmpleados,
 };
 
 export default userModel;
