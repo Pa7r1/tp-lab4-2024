@@ -1,8 +1,8 @@
 import { param, body, validationResult } from "express-validator";
 
-export const validarId = param("id").isInt({ min: 1 });
+export const validarId = () => [ param("id").isInt({ min: 1 }) ];
 
-// Middleware para verificar las validaciones
+//middleware para verificar las validaciones
 export const verificarValidaciones = (req, res, next) => {
   const validacion = validationResult(req);
   if (!validacion.isEmpty()) {
@@ -11,33 +11,46 @@ export const verificarValidaciones = (req, res, next) => {
   next();
 };
 
-export const validarUsuario = [
-  body("username").isAlphanumeric().notEmpty().isLength({ max: 25 }),
+//middleware para validar la edición de empleado
+export const validarEditarEmpleado = () => [
+  param("id")
+    .notEmpty()
+    .withMessage("El ID del empleado es requerido.")
+    .isInt({ min: 1 })
+    .withMessage("El ID del empleado debe ser un número entero positivo."),
+  body("nombre")
+    .optional()
+    .isString()
+    .isLength({ max: 150 })
+    .withMessage("El nombre no debe exceder los 150 caracteres."),
+  body("cargo")
+    .optional()
+    .isString()
+    .isLength({ max: 100 })
+    .withMessage("El cargo no debe exceder los 100 caracteres."),
+  body("salario")
+    .optional()
+    .isDecimal({ min: 0 })
+    .withMessage("El salario debe ser un número decimal positivo."),
+  body("fecha_contrato")
+    .optional()
+    .isISO8601()
+    .withMessage("La fecha de contrato debe tener un formato válido (YYYY-MM-DD)."),
+];
+
+//middleware validar ingresos de datos de usuario
+export const validarUsuario = () => [
+    body("username").isAlphanumeric().notEmpty().isLength({ max: 25 }),
   body("password").isStrongPassword({
-    minLength: 8,
-    minLowercase: 1,
-    minUppercase: 1,
-    minNumbers: 1,
-    minSymbols: 0,
-  }),
-  body("rol").isAlpha().notEmpty().isLength({ max: 45 }),
-];
-
-export const validarConsulta = () => [
-  query("edad_gt").isInt({ min: 0 }).optional(),
-  query("edad_lt").isInt({ min: 0 }).optional(),
-  query("altura_gt").isFloat({ min: 0 }).optional(),
-  query("altura_lt").isFloat({ min: 0 }).optional(),
-];
-
-export const validarPersona = () => [
-  body("nombre").isAlpha().notEmpty().isLength({ max: 50 }),
-  body("apellido").isAlpha().notEmpty().isLength({ max: 50 }),
-  body("edad").isInt({ min: 1 }),
-  body("altura").isFloat({ min: 1 }),
-  body("peso").isDecimal(),
-  body("fechaNacimiento").isISO8601(),
-];
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+    }),
+    body("rol").isAlpha().notEmpty().isLength({ max: 45 }),
+  ];
+  
 
 //middleware para validar el nuevo libro
 export const validarNuevoLibro = () => [
@@ -50,7 +63,6 @@ export const validarNuevoLibro = () => [
   body("stock_inicial").isInt({ min: 0 }),
   body("precio_venta").isDecimal({ min: 0 }),
   body("precio_alquiler").isDecimal({ min: 0 }),
-  verificarValidaciones,  //middleware de verificación de validaciones
 ];
 
 //middleware para validar la edición de un libro
@@ -63,19 +75,19 @@ export const validarEdicionLibro = () => [
   body("i_año").optional().isInt({ min: 1800, max: new Date().getFullYear() }),
   body("i_precio_venta").optional().isDecimal({ min: 0 }),
   body("i_precio_alquiler").optional().isDecimal({ min: 0 }),
-  verificarValidaciones,  //verificación en las validaciones
+  //verificarValidaciones,  //verificación en las validaciones
 ];
 
 //middleware para la búsqueda de libros
-export const validarBusquedaLibro = [
+export const validarBusquedaLibro = () => [
   query("titulo").optional().isString().isLength({ max: 200 }),
   query("autor_nombre").optional().isString().isLength({ max: 150 }),
   query("isbn").optional().isString().isLength({ max: 20 }),
-  verificarValidaciones,  // Verifica las validaciones
+  //verificarValidaciones,  // Verifica las validaciones
 ];
 
 //middleware para Validar los campos de la Solicitud al crear un empleado
-export const validarCrearEmpleado = [
+export const validarCrearEmpleado = () => [
   body("nombre").notEmpty().isString().isLength({ max: 150 }),
   body("cargo").notEmpty().isString().isLength({ max: 100 }),
   body("salario").notEmpty().isDecimal({ min: 0 }),
@@ -83,30 +95,31 @@ export const validarCrearEmpleado = [
   body("username").notEmpty().isString().isLength({ max: 50 }),
   body("password").notEmpty().isString().isLength({ min: 8 }),
   body("rol").notEmpty().isIn(["administrador", "empleado"]),
-  verificarValidaciones,
+  //verificarValidaciones,
 ];
 
+
 //middleware de validación para crear proveedor
-export const validarCrearProveedor = [
+export const validarCrearProveedor = () => [
   body("nombre").notEmpty().isString().isLength({ max: 150 }),
   body("telefono").notEmpty().isString().isLength({ max: 20 }),
   body("email").notEmpty().isEmail().isLength({ max: 100 }),
   body("direccion").notEmpty().isString().isLength({ max: 200 }),
-  verificarValidaciones,
+  //verificarValidaciones,
 ];
 
 //middleware para validar parámetros en libroStockBajo
-export const validarLibroStockBajo = [
+export const validarLibroStockBajo = () => [
   query("cantidad")
     .notEmpty()
     .withMessage("La cantidad es requerida.")
     .isInt({ min: 1 })
     .withMessage("La cantidad debe ser un número entero mayor o igual a 1."),
-  verificarValidaciones,
+  //verificarValidaciones,
 ];
 
 //middleware para validar Datos en agregarStock
-export const validarAgregarStock = [
+export const validarAgregarStock = () => [
   // id del libro sea positivo
   param("libro_id")
     .notEmpty()
@@ -138,6 +151,56 @@ export const validarAgregarStock = [
     .custom((value) => value >= 0)
     .withMessage("El costo de compra debe ser positivo o cero."),
 
-  verificarValidaciones,
+  //verificarValidaciones,
 ];
 
+//middleware para validar las fechas (ventas_fecha, librosFecha)
+export const validarFechas = () => [
+  query("fecha_i")
+    .notEmpty()
+    .withMessage("La fecha inicial es requerida.")
+    .isDate()
+    .withMessage("La fecha inicial debe tener un formato válido (YYYY-MM-DD)."),
+  query("fecha_f")
+    .notEmpty()
+    .withMessage("La fecha final es requerida.")
+    .isDate()
+    .withMessage("La fecha final debe tener un formato válido (YYYY-MM-DD).")
+    .custom((fecha_f, { req }) => {
+      const fecha_i = req.query.fecha_i;
+      return new Date(fecha_f) >= new Date(fecha_i);
+    })
+    .withMessage("La fecha final debe ser mayor o igual a la fecha inicial."),
+  //verificarValidaciones,
+];
+
+//middleware para validar fechas individuales (ventasHoy, gananciaDia)
+export const validarFechaIndividual = () => [
+  query("fecha").optional().isDate().withMessage("La fecha debe tener un formato válido (YYYY-MM-DD)."),
+  //verificarValidaciones,
+];
+
+//Middleware para Validar Datos de la Venta (nuevaVenta)
+export const validarNuevaVenta = () => [
+  body("empleado_id")
+    .notEmpty()
+    .withMessage("El ID del empleado es requerido.")
+    .isInt({ min: 1 })
+    .withMessage("El ID del empleado debe ser un número entero positivo."),
+  body("cliente_id")
+    .notEmpty()
+    .withMessage("El ID del cliente es requerido.")
+    .isInt({ min: 1 })
+    .withMessage("El ID del cliente debe ser un número entero positivo."),
+  body("libro_id")
+    .notEmpty()
+    .withMessage("El ID del libro es requerido.")
+    .isInt({ min: 1 })
+    .withMessage("El ID del libro debe ser un número entero positivo."),
+  body("cantidad")
+    .notEmpty()
+    .withMessage("La cantidad es requerida.")
+    .isInt({ min: 1 })
+    .withMessage("La cantidad debe ser un número entero positivo."),
+  //verificarValidaciones,
+];
