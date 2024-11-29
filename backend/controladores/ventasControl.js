@@ -1,5 +1,11 @@
 import ventasModel from "../modelos/ventasModelo.js";
 import { validarJwt, validarRol } from "../middleware/authMiddleware.js";
+import {
+  validarFechaIndividual,
+  validarFechas,
+  validarNuevaVenta,
+  verificarValidaciones,
+} from "../middleware/validaciones.js";
 
 const ventas = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
@@ -85,10 +91,28 @@ const nuevaVenta = async (req, res) => {
 const ventaControl = {
   name: "ventas",
   todasventas: [validarJwt, validarRol("administrador"), ventas],
-  ventas_fecha: reporteVenta,
-  create: nuevaVenta,
-  ventasHoy: [validarJwt, validarRol("administrador"), ventasDiarias],
-  librosFecha: [validarJwt, validarRol("administrador"), libroMasVendido],
-  gananciaDia: [validarJwt, validarRol("administrador"), gananciaDiaria],
+  ventas_fecha: [validarFechas(), verificarValidaciones, reporteVenta],
+  create: [validarNuevaVenta(), verificarValidaciones, nuevaVenta],
+  ventasHoy: [
+    validarJwt,
+    validarRol("administrador"),
+    validarFechaIndividual(),
+    verificarValidaciones,
+    ventasDiarias,
+  ],
+  librosFecha: [
+    validarJwt,
+    validarRol("administrador"),
+    validarFechas(),
+    verificarValidaciones,
+    libroMasVendido,
+  ],
+  gananciaDia: [
+    validarJwt,
+    validarRol("administrador"),
+    validarFechaIndividual(),
+    verificarValidaciones,
+    gananciaDiaria,
+  ],
 };
 export default ventaControl;
