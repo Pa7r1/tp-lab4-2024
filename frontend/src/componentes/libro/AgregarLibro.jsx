@@ -37,7 +37,7 @@ const AgregarLibro = ({actualizarLibros}) => {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Libro agregado con éxito: " + JSON.stringify(data));
+        alert("Libro agregado con éxito: ");
         actualizarLibros()
       } else {
         alert("Error al agregar el libro.");
