@@ -1,3 +1,5 @@
+//NO DEVUELVE
+
 import React, { useState } from "react";
 import { useAuth } from "../../Auth";
 
@@ -5,25 +7,34 @@ const LibrosMasVendidos = () => {
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
   const [libros, setLibros] = useState([]);
-  const {sesion} = useAuth()
+  const { sesion } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Construir la URL con los parámetros de consulta (query parameters)
+    const url = new URL("http://localhost:3000/api/v1/ventas/libro");
+    const params = { 
+      fecha_inicio: fechaInicio, 
+      fecha_fin: fechaFin 
+    };
+
+    // Agregar los parámetros a la URL
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
     try {
-      const response = await fetch("http://localhost:3000/api/v1/ventas/libro", {
-        method: "POST",
+      const response = await fetch(url, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${sesion.token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fecha_inicio: fechaInicio, fecha_fin: fechaFin }),
       });
 
       if (response.ok) {
         const data = await response.json();
         setLibros(data);
-        alert(`libro mas vendido: ${data}`) // Almacena los libros más vendidos
+        alert(`Libros más vendidos: ${JSON.stringify(data)}`); // Almacena los libros más vendidos
       } else {
         alert("Error al obtener los libros más vendidos.");
       }

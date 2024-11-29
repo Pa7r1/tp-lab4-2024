@@ -8,19 +8,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema libreria
+-- Schema libreria1
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema libreria
+-- Schema libreria1
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `libreria` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `libreria` ;
+CREATE SCHEMA IF NOT EXISTS `libreria1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `libreria1` ;
 
 -- -----------------------------------------------------
--- Table `libreria`.`empleados`
+-- Table `libreria1`.`empleados`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`empleados` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`empleados` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(150) NOT NULL,
   `cargo` VARCHAR(100) NULL DEFAULT NULL,
@@ -35,9 +35,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`clientes`
+-- Table `libreria1`.`clientes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`clientes` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`clientes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(150) NOT NULL,
   `email` VARCHAR(100) NULL DEFAULT NULL,
@@ -51,9 +51,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`alquileres`
+-- Table `libreria1`.`alquileres`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`alquileres` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`alquileres` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `empleado_id` INT NULL DEFAULT NULL,
   `cliente_id` INT NULL DEFAULT NULL,
@@ -65,19 +65,19 @@ CREATE TABLE IF NOT EXISTS `libreria`.`alquileres` (
   INDEX `cliente_id` (`cliente_id` ASC) VISIBLE,
   CONSTRAINT `alquileres_ibfk_1`
     FOREIGN KEY (`empleado_id`)
-    REFERENCES `libreria`.`empleados` (`id`),
+    REFERENCES `libreria1`.`empleados` (`id`),
   CONSTRAINT `alquileres_ibfk_2`
     FOREIGN KEY (`cliente_id`)
-    REFERENCES `libreria`.`clientes` (`id`))
+    REFERENCES `libreria1`.`clientes` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`autores`
+-- Table `libreria1`.`autores`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`autores` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`autores` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`id`))
@@ -88,9 +88,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`generos`
+-- Table `libreria1`.`generos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`generos` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`generos` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`))
@@ -101,9 +101,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`editoriales`
+-- Table `libreria1`.`editoriales`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`editoriales` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`editoriales` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`id`))
@@ -114,9 +114,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`libros`
+-- Table `libreria1`.`libros`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`libros` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`libros` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(200) NOT NULL,
   `isbn` VARCHAR(20) NULL DEFAULT NULL,
@@ -134,13 +134,13 @@ CREATE TABLE IF NOT EXISTS `libreria`.`libros` (
   INDEX `editorial_id` (`editorial_id` ASC) VISIBLE,
   CONSTRAINT `libros_ibfk_1`
     FOREIGN KEY (`genero_id`)
-    REFERENCES `libreria`.`generos` (`id`),
+    REFERENCES `libreria1`.`generos` (`id`),
   CONSTRAINT `libros_ibfk_2`
     FOREIGN KEY (`autor_id`)
-    REFERENCES `libreria`.`autores` (`id`),
+    REFERENCES `libreria1`.`autores` (`id`),
   CONSTRAINT `libros_ibfk_3`
     FOREIGN KEY (`editorial_id`)
-    REFERENCES `libreria`.`editoriales` (`id`))
+    REFERENCES `libreria1`.`editoriales` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -148,9 +148,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`detalles_alquileres`
+-- Table `libreria1`.`detalles_alquileres`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`detalles_alquileres` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`detalles_alquileres` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `alquiler_id` INT NULL DEFAULT NULL,
   `libro_id` INT NULL DEFAULT NULL,
@@ -162,19 +162,19 @@ CREATE TABLE IF NOT EXISTS `libreria`.`detalles_alquileres` (
   INDEX `libro_id` (`libro_id` ASC) VISIBLE,
   CONSTRAINT `detalles_alquileres_ibfk_1`
     FOREIGN KEY (`alquiler_id`)
-    REFERENCES `libreria`.`alquileres` (`id`),
+    REFERENCES `libreria1`.`alquileres` (`id`),
   CONSTRAINT `detalles_alquileres_ibfk_2`
     FOREIGN KEY (`libro_id`)
-    REFERENCES `libreria`.`libros` (`id`))
+    REFERENCES `libreria1`.`libros` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`ventas`
+-- Table `libreria1`.`ventas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`ventas` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`ventas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `empleado_id` INT NULL DEFAULT NULL,
   `cliente_id` INT NULL DEFAULT NULL,
@@ -185,10 +185,10 @@ CREATE TABLE IF NOT EXISTS `libreria`.`ventas` (
   INDEX `cliente_id` (`cliente_id` ASC) VISIBLE,
   CONSTRAINT `ventas_ibfk_1`
     FOREIGN KEY (`empleado_id`)
-    REFERENCES `libreria`.`empleados` (`id`),
+    REFERENCES `libreria1`.`empleados` (`id`),
   CONSTRAINT `ventas_ibfk_2`
     FOREIGN KEY (`cliente_id`)
-    REFERENCES `libreria`.`clientes` (`id`))
+    REFERENCES `libreria1`.`clientes` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb4
@@ -196,9 +196,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`detalles_ventas`
+-- Table `libreria1`.`detalles_ventas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`detalles_ventas` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`detalles_ventas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `venta_id` INT NULL DEFAULT NULL,
   `libro_id` INT NULL DEFAULT NULL,
@@ -209,10 +209,10 @@ CREATE TABLE IF NOT EXISTS `libreria`.`detalles_ventas` (
   INDEX `libro_id` (`libro_id` ASC) VISIBLE,
   CONSTRAINT `detalles_ventas_ibfk_1`
     FOREIGN KEY (`venta_id`)
-    REFERENCES `libreria`.`ventas` (`id`),
+    REFERENCES `libreria1`.`ventas` (`id`),
   CONSTRAINT `detalles_ventas_ibfk_2`
     FOREIGN KEY (`libro_id`)
-    REFERENCES `libreria`.`libros` (`id`))
+    REFERENCES `libreria1`.`libros` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb4
@@ -220,9 +220,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`inventario_libros`
+-- Table `libreria1`.`inventario_libros`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`inventario_libros` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`inventario_libros` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `libro_id` INT NULL DEFAULT NULL,
   `cantidad` INT NULL DEFAULT '0',
@@ -231,7 +231,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`inventario_libros` (
   INDEX `libro_id` (`libro_id` ASC) VISIBLE,
   CONSTRAINT `inventario_libros_ibfk_1`
     FOREIGN KEY (`libro_id`)
-    REFERENCES `libreria`.`libros` (`id`))
+    REFERENCES `libreria1`.`libros` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 10
 DEFAULT CHARACTER SET = utf8mb4
@@ -239,9 +239,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`movimientos_inventario`
+-- Table `libreria1`.`movimientos_inventario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`movimientos_inventario` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`movimientos_inventario` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `libro_id` INT NULL DEFAULT NULL,
   `tipo_movimiento` ENUM('entrada', 'venta', 'alquiler') NULL DEFAULT NULL,
@@ -251,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `libreria`.`movimientos_inventario` (
   INDEX `libro_id` (`libro_id` ASC) VISIBLE,
   CONSTRAINT `movimientos_inventario_ibfk_1`
     FOREIGN KEY (`libro_id`)
-    REFERENCES `libreria`.`libros` (`id`))
+    REFERENCES `libreria1`.`libros` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 30
 DEFAULT CHARACTER SET = utf8mb4
@@ -259,9 +259,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`proveedores`
+-- Table `libreria1`.`proveedores`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`proveedores` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`proveedores` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(150) NOT NULL,
   `telefono` VARCHAR(20) NULL DEFAULT NULL,
@@ -276,9 +276,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`reposiciones_proveedores`
+-- Table `libreria1`.`reposiciones_proveedores`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`reposiciones_proveedores` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`reposiciones_proveedores` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `proveedor_id` INT NOT NULL,
   `libro_id` INT NOT NULL,
@@ -290,10 +290,10 @@ CREATE TABLE IF NOT EXISTS `libreria`.`reposiciones_proveedores` (
   INDEX `libro_id` (`libro_id` ASC) VISIBLE,
   CONSTRAINT `reposiciones_proveedores_ibfk_1`
     FOREIGN KEY (`proveedor_id`)
-    REFERENCES `libreria`.`proveedores` (`id`),
+    REFERENCES `libreria1`.`proveedores` (`id`),
   CONSTRAINT `reposiciones_proveedores_ibfk_2`
     FOREIGN KEY (`libro_id`)
-    REFERENCES `libreria`.`libros` (`id`))
+    REFERENCES `libreria1`.`libros` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
@@ -301,9 +301,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `libreria`.`usuarios`
+-- Table `libreria1`.`usuarios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `libreria`.`usuarios` (
+CREATE TABLE IF NOT EXISTS `libreria1`.`usuarios` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
@@ -314,20 +314,20 @@ CREATE TABLE IF NOT EXISTS `libreria`.`usuarios` (
   INDEX `empleado_id` (`empleado_id` ASC) VISIBLE,
   CONSTRAINT `usuarios_ibfk_1`
     FOREIGN KEY (`empleado_id`)
-    REFERENCES `libreria`.`empleados` (`id`))
+    REFERENCES `libreria1`.`empleados` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-USE `libreria` ;
+USE `libreria1` ;
 
 -- -----------------------------------------------------
 -- procedure AgregarEmpleado
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarEmpleado`(
 	IN i_nombre VARCHAR(150),
     IN i_cargo VARCHAR(100),
@@ -367,7 +367,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarLibroNuevo`(
     IN i_titulo VARCHAR(200),
     IN i_isbn VARCHAR(20),
@@ -478,7 +478,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarProveedor`(
 IN i_nombre VARCHAR(150),
 IN i_telefono VARCHAR(20),
@@ -505,7 +505,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarStock`(
     IN i_libro_id INT,
     IN i_proveedor_id INT,
@@ -574,7 +574,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `EditarLibro`(
     IN i_libro_id INT,
     IN i_titulo VARCHAR(200),
@@ -673,7 +673,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `VerificarStockDisponible`()
 BEGIN
     SELECT 
@@ -691,7 +691,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarCliente`(
 IN i_nombre VARCHAR(250),
 IN i_email VARCHAR(250),
@@ -712,7 +712,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `all`()
 BEGIN
 SELECT l.id,
@@ -738,7 +738,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarDB`()
 BEGIN
 DECLARE hecho INT DEFAULT FALSE;
@@ -779,7 +779,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `busquedaAvanzada`(
     IN i_titulo VARCHAR(200),
     IN i_autor_nombre VARCHAR(150),
@@ -816,7 +816,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calcularGananciasDiarias`(IN fecha DATE)
 BEGIN
     SELECT SUM(dv.cantidad * (dv.precio_unitario - l.precio_alquiler)) AS ganancias
@@ -833,7 +833,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calcularVentasDiarias`(IN fecha DATE)
 BEGIN
     SELECT SUM(total) AS total_ventas
@@ -848,7 +848,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deshabilitarEmpleado`(
 IN i_empleado_id INT
 )
@@ -867,7 +867,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deshabilitarLibro`(
 IN i_libro_id INT
 )
@@ -886,7 +886,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `empleadoPorId`(IN i_empleado_id INT)
 BEGIN
   SELECT e.id, e.nombre, e.cargo, e.salario, e.fecha_contratacion, u.username, u.rol
@@ -902,7 +902,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `generarReporteVentas`(IN fecha_inicio DATE, IN fecha_fin DATE)
 BEGIN
     SELECT l.id, l.titulo, SUM(dv.cantidad) AS cantidad_vendida, SUM(dv.cantidad * dv.precio_unitario) AS total_ventas
@@ -920,7 +920,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `habilitarEmpleado`(
 IN i_empleado_id INT
 )
@@ -939,7 +939,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `habilitarLibro`(
 IN i_libro_id INT
 )
@@ -958,7 +958,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `historialAlquileresLibro`(
     IN i_libro_id INT
 )
@@ -984,7 +984,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `librosActivos`()
 BEGIN
 SELECT l.id,
@@ -1010,7 +1010,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `librosConStockBajo`(IN minimo_stock INT)
 BEGIN
    SELECT 
@@ -1029,7 +1029,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerLibrosMasAlquilado`()
 BEGIN
     SELECT 
@@ -1053,7 +1053,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerLibrosMasVendidos`(IN fecha_inicio DATE, IN fecha_fin DATE)
 BEGIN
     SELECT l.id, l.titulo, SUM(dv.cantidad) AS total_vendido
@@ -1072,7 +1072,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerVentas`(
     IN i_offset INT,      -- Para la paginación (número de la página)
     IN i_limit INT        -- Para la paginación (número de elementos por página)
@@ -1111,7 +1111,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerVentasConPaginacion`(
     IN i_offset INT, 
     IN i_limit INT
@@ -1149,7 +1149,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarAlquiler`(
     IN i_empleado_id INT,
     IN i_cliente_id INT,
@@ -1223,7 +1223,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarVentas`(
     IN i_empleado_id INT,
     IN i_cliente_id INT,
@@ -1279,7 +1279,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarVentasMultiple`(
     IN i_empleado_id INT,
     IN i_cliente_id INT,
@@ -1361,7 +1361,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `verEmpleadosActivos`()
 BEGIN
    SELECT e.id, e.nombre, e.cargo, e.salario, e.fecha_contratacion, u.username, u.rol
@@ -1377,7 +1377,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `libreria`$$
+USE `libreria1`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `verEmpleadosInactivos`()
 BEGIN
    SELECT e.id, e.nombre, e.cargo, e.salario, e.fecha_contratacion, u.username, u.rol
