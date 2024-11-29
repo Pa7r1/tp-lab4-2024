@@ -1,6 +1,9 @@
 import { useState } from "react";
 import AgregarLibro from "../componentes/libro/AgregarLibro";
 import ListaLibrosActivos from "../componentes/libro/TodosLosLibros";
+import VerificarStock from "../componentes/libro/VerificarStock";
+import RegistrarVenta from "../componentes/libro/RegistrarVentas";
+
 
 
 const Libros = () => {
@@ -11,11 +14,14 @@ const Libros = () => {
     };
   
     return (
-      <div style={{borderStyle: "groove"}}>
-        <AgregarLibro actualizarLibros={actualizarLibros} />
-        <ListaLibrosActivos key={refrescar} />
-        
+      <>
+      <div style={{borderStyle: "inset"}}>
+         {/* <AgregarLibro actualizarLibros={actualizarLibros} /> 
+        <ListaLibrosActivos key={refrescar} />  */}
         </div>
+        {/* <VerificarStock/> */}
+        <RegistrarVenta/>
+        </>
     );
   };
 

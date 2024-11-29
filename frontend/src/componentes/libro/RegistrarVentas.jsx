@@ -20,7 +20,7 @@ const RegistrarVenta = () => {
       libro_id: libroId,
       cantidad: cantidad,
     };
-
+    console.log(ventaData)
     try {
       const response = await fetch("http://localhost:3000/api/v1/ventas", {
         method: "POST",
@@ -30,22 +30,24 @@ const RegistrarVenta = () => {
         },
         body: JSON.stringify(ventaData),
       });
-
+      console.log(data)
       const data = await response.json();
+      
       if (response.ok) {
         setMensaje(`Venta registrada con éxito! ID de venta: ${data.venta_id}`);
       } else {
         setMensaje(`Error: ${data.message}`);
       }
+       
     } catch (error) {
       console.error("Error al registrar venta:", error);
       setMensaje("Error al registrar la venta.");
     }
   };
-
+  
   return (
-    <div>
-      <h1>Registrar Venta</h1>
+    <div style={{borderStyle:"inset"}}>
+      
       <form onSubmit={handleSubmit}>
         <div>
           <label>Empleado ID</label>
