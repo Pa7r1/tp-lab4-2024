@@ -18,12 +18,12 @@ const Libros = () => {
     return (
       <>
       <div style={{borderStyle: "inset"}}>
-         {/* <AgregarLibro actualizarLibros={actualizarLibros} /> 
-        <ListaLibrosActivos key={refrescar} />  */}
+         <AgregarLibro actualizarLibros={actualizarLibros} /> 
+        <ListaLibrosActivos key={refrescar} /> 
         </div>
-        {/* <VerificarStock/> */}
-        {/* <RegistrarVenta actualizarLibros={actualizarLibros}/>
-        <ListaVentas key={refrescar}/> */}
+        <VerificarStock/>
+        <RegistrarVenta actualizarLibros={actualizarLibros}/>
+        <ListaVentas key={refrescar}/>
 
         <LibrosMasVendidos/>
         </>
