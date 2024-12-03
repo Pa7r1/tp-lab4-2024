@@ -1,18 +1,21 @@
 import React, { useState } from "react";
+import { useAuth } from "../../Auth";
 
 const AgregarEmpleado = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     cargo: "",
     salario: "",
-    fecha_contratacion: "",
+    fecha_contrato: "",
     username: "",
     password: "",
     rol: "empleado",
   });
-
+  // console.log(formData)
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
+
+  const { sesion } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,17 +33,17 @@ const AgregarEmpleado = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sesion.token}`
+          Authorization: `Bearer ${sesion.token}`,
         },
         body: JSON.stringify(formData),
       });
-
+      console.log(formData);
       const data = await response.json();
-
+      console.log(data);
       if (response.ok) {
-        setMensaje(data.message); // Mostrar mensaje de éxito
+        setMensaje(data.message);
       } else {
-        setError(data.message || "Hubo un error al agregar el empleado.");
+        alert(data.message || "Hubo un error al agregar el empleado.");
       }
     } catch (error) {
       console.error("Error al agregar el empleado:", error);
@@ -65,7 +68,6 @@ const AgregarEmpleado = () => {
             required
           />
         </div>
-        
 
         <div>
           <label>Cargo:</label>
@@ -90,11 +92,11 @@ const AgregarEmpleado = () => {
         </div>
 
         <div>
-          <label>Fecha de Contratación:</label>
+          <label>Fecha de Contrato:</label>
           <input
             type="date"
-            name="fecha_contratacion"
-            value={formData.fecha_contratacion}
+            name="fecha_contrato"
+            value={formData.fecha_contrato}
             onChange={handleChange}
             required
           />

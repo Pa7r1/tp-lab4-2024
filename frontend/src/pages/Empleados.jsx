@@ -1,7 +1,5 @@
-const Empleados = ()=>{
-    return (
-        <h1>stil bulshit</h1>
-    )
-}
+const Empleados = () => {
+  return <></>;
+};
 
-export default Empleados
+export default Empleados;

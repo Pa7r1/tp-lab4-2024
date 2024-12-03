@@ -16,13 +16,16 @@ const ReponerStockProveedor = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/reponerStock", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(reposicion),
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/v1/reponerStock",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reposicion),
+        }
+      );
 
       if (response.ok) {
         setMensaje("Stock reponido exitosamente.");

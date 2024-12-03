@@ -6,7 +6,7 @@ const proveedores = async () => {
   const [result] = await db.execute(sql);
   return result;
 };
-const agreagrProveedor = async (nombre, telefono, email, direccion) => {
+const agregarProveedor = async (nombre, telefono, email, direccion) => {
   const sql = `CALL AgregarProveedor(?,?,?,?)`;
   const [result] = await db.execute(sql, [nombre, telefono, email, direccion]);
   return result;
@@ -19,7 +19,7 @@ const proveedorPorNombre = async (nombre) => {
 };
 
 const proveedorModel = {
-  agreagrProveedor,
+  agregarProveedor,
   proveedorPorNombre,
   proveedores,
 };

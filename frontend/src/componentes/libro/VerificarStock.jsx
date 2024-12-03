@@ -4,17 +4,17 @@ import { useAuth } from "../../Auth";
 const VerificarStock = () => {
   const [stock, setStock] = useState([]);
   const [mensaje, setMensaje] = useState("");
-  const {sesion} = useAuth()
+  const { sesion } = useAuth();
   // console.log("Es un arreglo:", Array.isArray(stock));
   // console.log(stock)
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/v1/stock",{
+        const response = await fetch("http://localhost:3000/api/v1/stock", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${sesion.token}`,
-          }
+          },
         });
         if (response.ok) {
           const data = await response.json();
@@ -31,10 +31,9 @@ const VerificarStock = () => {
 
     fetchStock(); // Llamada a la API al cargar el componente
   }, []);
-    // var stock = stock.Stock_disoponible
+  // var stock = stock.Stock_disoponible
   return (
-    <div style={{ backgroundColor:"#d8cdc4"}}>
-      
+    <div style={{ backgroundColor: "#d8cdc4" }}>
       {mensaje && <p>{mensaje}</p>}
       <table>
         <thead>

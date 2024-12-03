@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 
 const HistorialAlquileres = () => {
@@ -11,7 +9,9 @@ const HistorialAlquileres = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/historialAlquileres/${libroId}`);
+      const response = await fetch(
+        `http://localhost:3000/api/v1/historialAlquileres/${libroId}`
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -60,7 +60,9 @@ const HistorialAlquileres = () => {
               <td>{alquiler.alquiler_id}</td>
               <td>{alquiler.cliente}</td>
               <td>{new Date(alquiler.fecha_alquiler).toLocaleDateString()}</td>
-              <td>{new Date(alquiler.fecha_devolucion).toLocaleDateString()}</td>
+              <td>
+                {new Date(alquiler.fecha_devolucion).toLocaleDateString()}
+              </td>
               <td>{alquiler.duracion_dias}</td>
               <td>{alquiler.precio_alquiler}</td>
             </tr>

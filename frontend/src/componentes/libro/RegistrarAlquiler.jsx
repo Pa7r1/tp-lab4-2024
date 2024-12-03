@@ -31,7 +31,9 @@ const RegistrarAlquiler = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setMensaje(`Alquiler registrado con éxito! ID de alquiler: ${data.id_alquiler}`);
+        setMensaje(
+          `Alquiler registrado con éxito! ID de alquiler: ${data.id_alquiler}`
+        );
       } else {
         setMensaje(`Error: ${data.message}`);
       }

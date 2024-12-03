@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const AuthContext = createContext();
 
@@ -78,8 +78,10 @@ export const AuthStatus = () => {
   const navigate = useNavigate();
 
   if (sesion) {
-    
-    return <button onClick={() => logout(() => navigate("/"))}><LogoutIcon/></button>
-    
+    return (
+      <button onClick={() => logout(() => navigate("/"))}>
+        <LogoutIcon />
+      </button>
+    );
   }
-}
+};

@@ -13,8 +13,10 @@ const ObtenerEmpleado = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/empleado/${empleadoId}`);
-      
+      const response = await fetch(
+        `http://localhost:3000/api/v1/empleado/${empleadoId}`
+      );
+
       if (!response.ok) {
         throw new Error("Empleado no encontrado");
       }
@@ -50,12 +52,25 @@ const ObtenerEmpleado = () => {
       {empleado && (
         <div>
           <h3>Empleado Encontrado</h3>
-          <p><strong>Nombre:</strong> {empleado.nombre}</p>
-          <p><strong>Cargo:</strong> {empleado.cargo}</p>
-          <p><strong>Salario:</strong> {empleado.salario}</p>
-          <p><strong>Fecha de Contratación:</strong> {empleado.fecha_contratacion}</p>
-          <p><strong>Username:</strong> {empleado.username}</p>
-          <p><strong>Rol:</strong> {empleado.rol}</p>
+          <p>
+            <strong>Nombre:</strong> {empleado.nombre}
+          </p>
+          <p>
+            <strong>Cargo:</strong> {empleado.cargo}
+          </p>
+          <p>
+            <strong>Salario:</strong> {empleado.salario}
+          </p>
+          <p>
+            <strong>Fecha de Contratación:</strong>{" "}
+            {empleado.fecha_contratacion}
+          </p>
+          <p>
+            <strong>Username:</strong> {empleado.username}
+          </p>
+          <p>
+            <strong>Rol:</strong> {empleado.rol}
+          </p>
         </div>
       )}
     </div>

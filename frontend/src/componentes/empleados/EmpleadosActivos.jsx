@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../../Auth";
 
-const EmpleadosActivos = () => {
+const EmpleadosActivos = ({ refrescar }) => {
   const [empleados, setEmpleados] = useState([]);
   const [mensaje, setMensaje] = useState("");
+  const { sesion } = useAuth();
 
+  // console.log(empleados)
   useEffect(() => {
     const fetchEmpleados = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/v1/empleadosActivos");
-
+        const response = await fetch("http://localhost:3000/api/v1/empleados", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sesion.token}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
-          setEmpleados(data); // Guardar los resultados de los empleados activos
+          if (data && Array.isArray(data.Empleados)) {
+            setEmpleados(data.Empleados);
+          } else {
+            console.error(error);
+            setEmpleados([]);
+          }
         } else {
           const data = await response.json();
           setMensaje(data.message || "Hubo un error al obtener los empleados.");
@@ -21,13 +34,12 @@ const EmpleadosActivos = () => {
         setMensaje("Error al obtener los empleados.");
       }
     };
-
+    console.log("empelados", empleados);
     fetchEmpleados(); // Llamada a la API al cargar el componente
-  }, []);
+  }, [refrescar, sesion.token]);
 
   return (
     <div>
-      <h1>Empleados Activos</h1>
       {mensaje && <p>{mensaje}</p>}
       <table>
         <thead>

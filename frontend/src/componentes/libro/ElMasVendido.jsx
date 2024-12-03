@@ -1,79 +1,45 @@
-import React, { useState } from "react";
+//TO-DO
 
-const LibrosMasVendidos = () => {
-  const [fechaInicio, setFechaInicio] = useState("");
-  const [fechaFin, setFechaFin] = useState("");
-  const [libros, setLibros] = useState([]);
+import React, { useState, useEffect } from "react";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const LibroMasAlquilado = () => {
+  const [libro, setLibro] = useState(null);
 
+  // Función para obtener el libro más alquilado
+  const obtenerLibroMasAlquilado = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/libros/mas-vendidos", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fecha_inicio: fechaInicio, fecha_fin: fechaFin }),
-      });
-
+      const response = await fetch(
+        "http://localhost:3000/api/v1/libros/mas-alquilado"
+      );
       if (response.ok) {
         const data = await response.json();
-        setLibros(data); // Almacena los libros más vendidos
+        setLibro(data[0]); // El primer elemento es el libro más alquilado
       } else {
-        alert("Error al obtener los libros más vendidos.");
+        alert("Error al obtener el libro más alquilado.");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  // Llamar a la función al cargar el componente
+  useEffect(() => {
+    obtenerLibroMasAlquilado();
+  }, []);
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Fecha de inicio:
-          <input
-            type="date"
-            value={fechaInicio}
-            onChange={(e) => setFechaInicio(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Fecha de fin:
-          <input
-            type="date"
-            value={fechaFin}
-            onChange={(e) => setFechaFin(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Obtener Libros Más Vendidos</button>
-      </form>
-
-      <div>
-        {libros.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>Título</th>
-                <th>Total Vendido</th>
-              </tr>
-            </thead>
-            <tbody>
-              {libros.map((libro) => (
-                <tr key={libro.id}>
-                  <td>{libro.titulo}</td>
-                  <td>{libro.total_vendido}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <h1>Libro Más Alquilado</h1>
+      {libro ? (
+        <div>
+          <h2>{libro.libro}</h2>
+          <p>Total Alquileres: {libro.total_alquileres}</p>
+        </div>
+      ) : (
+        <p>Cargando...</p>
+      )}
     </div>
   );
 };
 
-export default LibrosMasVendidos;
+export default LibroMasAlquilado;

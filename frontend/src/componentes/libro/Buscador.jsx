@@ -6,7 +6,7 @@ const BuscadorAvanzado = () => {
   const [autor, setAutor] = useState("");
   const [isbn, setIsbn] = useState("");
   const [resultados, setResultados] = useState([]);
-  const {sesion} = useAuth()
+  const { sesion } = useAuth();
 
   const handleBuscar = async (e) => {
     e.preventDefault();
@@ -18,14 +18,17 @@ const BuscadorAvanzado = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/libros/buscar", {
-        method: "GET",
-        headers: {
+      const response = await fetch(
+        "http://localhost:3000/api/v1/libros/buscar",
+        {
+          method: "GET",
+          headers: {
             Authorization: `Bearer ${sesion.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(filtros),
-      });
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(filtros),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

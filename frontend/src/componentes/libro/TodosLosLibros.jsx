@@ -4,17 +4,17 @@ import { useAuth } from "../../Auth";
 const ListaLibrosActivos = () => {
   var [libritos, setLibritos] = useState([]);
   const [error, setError] = useState("");
-  const {sesion} = useAuth()
+  const { sesion } = useAuth();
   // console.log("Libros recibidos:", libritos);
   // console.log("Es un arreglo:", Array.isArray(libritos));
 
   useEffect(() => {
     const fetchLibros = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/v1/libros",{
-            // method: "GET",
-            headers: {Authorization: `Bearer ${sesion.token}`}
-        })
+        const response = await fetch("http://localhost:3000/api/v1/libros", {
+          // method: "GET",
+          headers: { Authorization: `Bearer ${sesion.token}` },
+        });
 
         if (!response.ok) {
           throw new Error("Error al obtener los libros activos.");
@@ -25,7 +25,7 @@ const ListaLibrosActivos = () => {
         setError(error.message);
       }
     };
-    
+
     fetchLibros();
   }, []);
 
@@ -34,9 +34,7 @@ const ListaLibrosActivos = () => {
   }
   var libritos = libritos.LIBROS || [];
   return (
-    <div style={{backgroundColor: "#d8cdc4"}}>
-        
-      
+    <div style={{ backgroundColor: "#d8cdc4" }}>
       <table>
         <thead>
           <tr>
