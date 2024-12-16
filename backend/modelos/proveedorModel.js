@@ -7,7 +7,11 @@ const proveedores = async () => {
   return result;
 };
 const agregarProveedor = async (nombre, telefono, email, direccion) => {
+<<<<<<< HEAD
+  const sql = `CALL AgregarProveedor(?,?,?,?)`;
+=======
   const sql = "CALL agregarProveedor(?,?,?,?)"
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
   const [result] = await db.execute(sql, [nombre, telefono, email, direccion]);
   return result;
 };

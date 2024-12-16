@@ -8,7 +8,7 @@ import {
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-
+  console.log(username, password);
   const [usuario] = await userModel.usuarios(username);
 
   if (!usuario || usuario.length == 0) {
@@ -16,7 +16,7 @@ const login = async (req, res) => {
   }
 
   const passwordComparada = await bcrypt.compare(password, usuario.password);
-
+  console.log(passwordComparada);
   if (!passwordComparada) {
     return res.status(400).send({ mensaje: "usuario o contraseña invalidos" });
   }

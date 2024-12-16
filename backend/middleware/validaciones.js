@@ -56,7 +56,6 @@ export const validarUsuario = () => [
     minNumbers: 1,
     minSymbols: 0,
   }),
-  body("rol").isAlpha().notEmpty().isLength({ max: 45 }),
 ];
 
 //middleware para validar el nuevo libro

@@ -11,11 +11,19 @@ const AgregarEmpleado = () => {
     password: "",
     rol: "empleado",
   });
+<<<<<<< HEAD
+  // console.log(formData)
+  const [mensaje, setMensaje] = useState("");
+  const [error, setError] = useState("");
+
+  const { sesion } = useAuth();
+=======
 // console.log(formData)
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
 
   const {sesion} = useAuth()
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,13 +41,19 @@ const AgregarEmpleado = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sesion.token}`
+          Authorization: `Bearer ${sesion.token}`,
         },
         body: JSON.stringify(formData),
       });
+<<<<<<< HEAD
+      console.log(formData);
+      const data = await response.json();
+      console.log(data);
+=======
       console.log(formData)
       const data = await response.json();
       console.log(data)
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
       if (response.ok) {
         setMensaje(data.message);
       } else {
@@ -68,7 +82,6 @@ const AgregarEmpleado = () => {
             required
           />
         </div>
-        
 
         <div>
           <label>Cargo:</label>

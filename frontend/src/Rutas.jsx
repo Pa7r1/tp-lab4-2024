@@ -1,4 +1,4 @@
-import {Routes, Route} from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 import Layout from "../src/pages/Layout";
 import Empleados from "../src/pages/Empleados";
 import Default from "../src/pages/Default";
@@ -6,15 +6,38 @@ import Home from "../src/pages/Home";
 import Inicio from "../src/pages/Inicio";
 import { Container } from "@mui/material";
 import NavBar from "../src/componentes/navbar/Navbar";
-import AdminPanelSettingsSharpIcon from '@mui/icons-material/AdminPanelSettingsSharp';
+import AdminPanelSettingsSharpIcon from "@mui/icons-material/AdminPanelSettingsSharp";
 import AcercaDe from "../src/pages/AcercaDe";
-import fondolibro5 from "../public/img/fondolibro5.jpg"
+import fondolibro5 from "../public/img/fondolibro5.jpg";
 import { AuthPage, AuthStatus } from "./Auth";
 import Libros from "./pages/Libros";
 import AdministrarEmpleados from "./pages/AdministrarEmpleados";
 import Proveedores from "./pages/Proveedores";
 
 const hideNavList = [
+<<<<<<< HEAD
+  {
+    path: "reportes",
+    icon: <AdminPanelSettingsSharpIcon />,
+    tittle: "Reportes",
+  },
+  {
+    path: "/proveedores",
+    icon: <AdminPanelSettingsSharpIcon />,
+    tittle: "Proveedores",
+  },
+  {
+    path: "/libros",
+    icon: <AdminPanelSettingsSharpIcon />,
+    tittle: "Libros",
+  },
+  {
+    path: "/administrar-empleados",
+    icon: <AdminPanelSettingsSharpIcon />,
+    tittle: "Administrar Empleados",
+  },
+];
+=======
     {
         path: "reportes",
         icon: <AdminPanelSettingsSharpIcon/>,
@@ -38,30 +61,85 @@ const hideNavList = [
     
     
 ]
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
 const navLinkList = [
-    {
-        tittle: "home",
-        path: "/home",
-    },
-    {
-        tittle: "Empleados",
-        path: "/empleados",
-    },
-    {
-        tittle: "Acerca de ",
-        path: "/acerca de",
-    },
-]
+  {
+    tittle: "home",
+    path: "/home",
+  },
+  {
+    tittle: "Empleados",
+    path: "/empleados",
+  },
+  {
+    tittle: "Acerca de ",
+    path: "/acerca de",
+  },
+];
 
 const backgroundStyle = {
-    backgroundImage: `url(${fondolibro5})`, // URL de la imagen
-    backgroundSize: "cover", // Escala la imagen para cubrir todo el contenedor
-    backgroundPosition: "center", // Centra la imagen
-    backgroundRepeat: "no-repeat", // Evita que se repita
-    height: "100vh", // Asegura que cubra toda la pantalla
-    width: "100%", // Ocupa todo el ancho
-}
+  backgroundImage: `url(${fondolibro5})`, // URL de la imagen
+  backgroundSize: "cover", // Escala la imagen para cubrir todo el contenedor
+  backgroundPosition: "center", // Centra la imagen
+  backgroundRepeat: "no-repeat", // Evita que se repita
+  height: "100vh", // Asegura que cubra toda la pantalla
+  width: "100%", // Ocupa todo el ancho
+};
 const Rutas = () => {
+<<<<<<< HEAD
+  return (
+    <>
+      <div style={backgroundStyle}>
+        <NavBar navLinkList={navLinkList} hideNavList={hideNavList} />
+        <Container sx={{ mt: 5 }}>
+          <AuthStatus />
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Inicio />} />
+
+              <Route
+                path="/empleados"
+                element={
+                  <AuthPage>
+                    <Empleados />
+                  </AuthPage>
+                }
+              />
+              <Route
+                path="/home"
+                element={
+                  <AuthPage>
+                    <Home />
+                  </AuthPage>
+                }
+              />
+              <Route path="/acerca de" element={<AcercaDe />} />
+
+              <Route
+                path="/libros"
+                element={
+                  <AuthPage>
+                    <Libros />
+                  </AuthPage>
+                }
+              />
+              <Route
+                path="/administrar-empleados"
+                element={
+                  <AuthPage>
+                    <AdministrarEmpleados />
+                  </AuthPage>
+                }
+              />
+              <Route
+                path="/proveedores"
+                element={
+                  <AuthPage>
+                    <Proveedores />
+                  </AuthPage>
+                }
+              />
+=======
     return (
         <>
             <div style={backgroundStyle}>
@@ -79,16 +157,15 @@ const Rutas = () => {
                             <Route path="/libros" element={<AuthPage><Libros /></AuthPage>} />
                             <Route path="/administrar-empleados" element={<AuthPage><AdministrarEmpleados /></AuthPage>} />
                             <Route path="/proveedores" element={<AuthPage><Proveedores /></AuthPage>} />
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
 
-                            <Route path="/*" element={<Default />} />
-
-                        </Route>
-                    </Routes>
-                    
-                </Container>
-            </div>
-        </>
-    );
-}
+              <Route path="/*" element={<Default />} />
+            </Route>
+          </Routes>
+        </Container>
+      </div>
+    </>
+  );
+};
 
 export default Rutas;
