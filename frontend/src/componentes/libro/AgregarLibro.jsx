@@ -37,7 +37,11 @@ const AgregarLibro = ({ actualizarLibros }) => {
       if (response.ok) {
         const data = await response.json();
         alert("Libro agregado con éxito: ");
+<<<<<<< HEAD
         actualizarLibros();
+=======
+        actualizarLibros()
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
       } else {
         alert("Error al agregar el libro.");
       }

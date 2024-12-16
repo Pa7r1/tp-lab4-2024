@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../Auth";
 
+<<<<<<< HEAD
 const EmpleadosActivos = ({ refrescar }) => {
   const [empleados, setEmpleados] = useState([]);
   const [mensaje, setMensaje] = useState("");
   const { sesion } = useAuth();
+=======
+const EmpleadosActivos = ({refrescar}) => {
+  const [empleados, setEmpleados] = useState([]);
+  const [mensaje, setMensaje] = useState("");
+  const {sesion} = useAuth()
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
 
   // console.log(empleados)
   useEffect(() => {
     const fetchEmpleados = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch("http://localhost:3000/api/v1/empleados", {
           method: "GET",
           headers: {
@@ -25,6 +33,25 @@ const EmpleadosActivos = ({ refrescar }) => {
             console.error(error);
             setEmpleados([]);
           }
+=======
+        const response = await fetch("http://localhost:3000/api/v1/empleados",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${sesion.token}`
+            }
+          }
+        );
+        if(response.ok) {
+          const data = await response.json();
+          if(data && Array.isArray(data.Empleados)){
+            setEmpleados(data.Empleados)
+          }else{
+            console.error(error)
+            setEmpleados([])
+          }   
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
         } else {
           const data = await response.json();
           setMensaje(data.message || "Hubo un error al obtener los empleados.");
@@ -34,12 +61,22 @@ const EmpleadosActivos = ({ refrescar }) => {
         setMensaje("Error al obtener los empleados.");
       }
     };
+<<<<<<< HEAD
     console.log("empelados", empleados);
     fetchEmpleados(); // Llamada a la API al cargar el componente
   }, [refrescar, sesion.token]);
 
   return (
     <div>
+=======
+       console.log("empelados",empleados)
+    fetchEmpleados(); // Llamada a la API al cargar el componente
+  }, [refrescar,sesion.token]);
+
+  return (
+    <div>
+      
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
       {mensaje && <p>{mensaje}</p>}
       <table>
         <thead>

@@ -26,4 +26,8 @@ const Proveedores = () => {
   );
 };
 
+<<<<<<< HEAD
 export default Proveedores;
+=======
+export default Proveedores;
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262

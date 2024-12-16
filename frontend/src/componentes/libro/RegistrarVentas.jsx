@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useAuth } from "../../Auth";
 
+<<<<<<< HEAD
 const RegistrarVenta = ({ actualizarLibros }) => {
+=======
+const RegistrarVenta = ({actualizarLibros}) => {
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
   const [empleadoId, setEmpleadoId] = useState("");
   const [clienteId, setClienteId] = useState("");
   const [libros, setLibros] = useState([]);
@@ -13,10 +17,14 @@ const RegistrarVenta = ({ actualizarLibros }) => {
 
   const handleAgregarLibro = () => {
     if (libroId && parseInt(cantidad) > 0) {
+<<<<<<< HEAD
       setLibros([
         ...libros,
         { libro_id: parseInt(libroId), cantidad: parseInt(cantidad) },
       ]);
+=======
+      setLibros([...libros, { libro_id: parseInt(libroId), cantidad: parseInt(cantidad) }]);
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
       setLibroId("");
       setCantidad("");
     } else {
@@ -45,16 +53,25 @@ const RegistrarVenta = ({ actualizarLibros }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(ventaData),
+        
       });
       // console.log(ventaData)
       const data = await response.json();
+<<<<<<< HEAD
       console.log(data);
+=======
+      console.log(data)
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
       if (response.ok) {
         window.alert(`Venta registrada con éxito!`);
         setEmpleadoId("");
         setClienteId("");
         setLibros([]);
+<<<<<<< HEAD
         actualizarLibros();
+=======
+        actualizarLibros()
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
       } else {
         setMensaje(`Error: ${data.message}`);
       }

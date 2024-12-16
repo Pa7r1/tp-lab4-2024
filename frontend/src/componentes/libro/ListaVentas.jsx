@@ -64,6 +64,10 @@ const ListaVentas = () => {
       {/* Aquí mostramos los libros de cada venta */}
       {ventas.map((venta) => (
         <div key={venta.venta_id} style={{ marginTop: "20px" }}>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
           {venta.libros && venta.libros.length > 0 ? (
             <table border="1" style={{ width: "100%", textAlign: "left" }}>
               <thead>
@@ -82,9 +86,13 @@ const ListaVentas = () => {
                     <td>{libro.titulo_libro}</td>
                     <td>{libro.cantidad}</td>
                     <td>{libro.precio_unitario.toFixed(2)}</td>
+<<<<<<< HEAD
                     <td>
                       {(libro.cantidad * libro.precio_unitario).toFixed(2)}
                     </td>
+=======
+                    <td>{(libro.cantidad * libro.precio_unitario).toFixed(2)}</td>
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
                   </tr>
                 ))}
               </tbody>
@@ -98,4 +106,8 @@ const ListaVentas = () => {
   );
 };
 
+<<<<<<< HEAD
 export default ListaVentas;
+=======
+export default ListaVentas;
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262

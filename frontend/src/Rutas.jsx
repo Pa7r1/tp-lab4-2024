@@ -15,6 +15,7 @@ import AdministrarEmpleados from "./pages/AdministrarEmpleados";
 import Proveedores from "./pages/Proveedores";
 
 const hideNavList = [
+<<<<<<< HEAD
   {
     path: "reportes",
     icon: <AdminPanelSettingsSharpIcon />,
@@ -36,6 +37,31 @@ const hideNavList = [
     tittle: "Administrar Empleados",
   },
 ];
+=======
+    {
+        path: "reportes",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Reportes",
+    },
+    {
+        path: "/proveedores",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Proveedores",
+    },
+    {
+        path: "/libros",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Libros",
+    },
+    {
+        path: "/administrar-empleados",
+        icon: <AdminPanelSettingsSharpIcon/>,
+        tittle: "Administrar Empleados",
+    },
+    
+    
+]
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
 const navLinkList = [
   {
     tittle: "home",
@@ -60,6 +86,7 @@ const backgroundStyle = {
   width: "100%", // Ocupa todo el ancho
 };
 const Rutas = () => {
+<<<<<<< HEAD
   return (
     <>
       <div style={backgroundStyle}>
@@ -112,6 +139,25 @@ const Rutas = () => {
                   </AuthPage>
                 }
               />
+=======
+    return (
+        <>
+            <div style={backgroundStyle}>
+                <NavBar navLinkList={navLinkList} hideNavList={hideNavList}/>
+                <Container sx={{ mt: 5, }}>
+                <AuthStatus/>
+                    <Routes >
+                        <Route path="/" element={<Layout />} >
+                            <Route index element={<Inicio />} />
+        
+                            <Route path="/empleados" element={<AuthPage><Empleados/></AuthPage>} />
+                            <Route path="/home" element={<AuthPage><Home /></AuthPage>} />
+                            <Route path="/acerca de" element={<AcercaDe />} />
+                            
+                            <Route path="/libros" element={<AuthPage><Libros /></AuthPage>} />
+                            <Route path="/administrar-empleados" element={<AuthPage><AdministrarEmpleados /></AuthPage>} />
+                            <Route path="/proveedores" element={<AuthPage><Proveedores /></AuthPage>} />
+>>>>>>> 884ce3979583d940959acf98706d299f9cdc7262
 
               <Route path="/*" element={<Default />} />
             </Route>
