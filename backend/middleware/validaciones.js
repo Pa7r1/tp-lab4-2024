@@ -111,9 +111,7 @@ export const validarCrearEmpleado = () => [
   body("salario").notEmpty().isDecimal({ min: 0 }),
   body("fecha_contrato").notEmpty().isDate(),
   body("username").notEmpty().isString().isLength({ max: 50 }),
-  body("password").notEmpty().isString().isLength({ min: 8 }),
-  body("rol").notEmpty().isIn(["administrador", "empleado"]),
-  //verificarValidaciones,
+  body("password").notEmpty().isLength({ min: 8 }), //verificarValidaciones,
 ];
 
 //middleware de validación para crear proveedor
